@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uskonto – harjoituskoe</title>
+<meta name="description" content="Uskonnon harjoituskoe 7. luokalle: uskonto ja uskonnottomuus, kristinusko, juutalaisuus ja islam.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f8f9; --paper:#ffffff; --ink:#1d2b3a; --muted:#546576;
+  --teal:#2a9db0; --teal-d:#1b6f7f; --blue:#2c5fa8; --indigo:#4b3f9e; --plum:#6d3a8f;
+  --ok:#1f8a4c; --okbg:#e6f5ec; --bad:#b3261e; --badbg:#fdecea; --line:#d5e3e7;
+  --accent:var(--teal); --accent-d:var(--teal-d);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Alegreya Sans","Segoe UI",system-ui,sans-serif;font-size:18px;line-height:1.5}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#3aa9bb 0%,#2a8fa6 55%,#2d6aa8 100%);color:#fff;padding:36px 16px 70px}
+.hero svg.mosaic{position:absolute;right:0;top:0;height:100%;width:42%;pointer-events:none}
+.hero .inner{position:relative;max-width:900px;margin:0 auto}
+.hero h1{font-family:"Alegreya",Georgia,serif;font-size:clamp(2rem,6vw,3.2rem);margin:0 0 6px;line-height:1.1}
+.hero p{margin:0;max-width:34em;font-size:1.1rem;opacity:.95}
+.hero .scorechip{display:inline-block;margin-top:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 16px;font-weight:700}
+main{max-width:900px;margin:-44px auto 60px;padding:0 16px;position:relative}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.tab{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px 6px 8px;cursor:pointer;font:inherit;color:var(--ink);text-align:center;box-shadow:0 2px 6px rgba(20,60,80,.08);transition:transform .15s}
+.tab:hover{transform:translateY(-2px)}
+.tab svg{width:34px;height:34px;display:block;margin:0 auto 2px}
+.tab .n{font-size:.78rem;color:var(--muted);display:block}
+.tab .t{font-weight:700;font-size:.98rem;line-height:1.15;display:block}
+.tab .s{display:block;font-size:.8rem;margin-top:3px;color:var(--muted);min-height:1.2em}
+.tab[aria-selected="true"]{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent),0 4px 10px rgba(20,60,80,.12)}
+.panel{display:none}
+.panel.active{display:block}
+.chead{background:var(--c);color:#fff;border-radius:var(--radius) var(--radius) 0 0;padding:20px 20px 18px;position:relative;overflow:hidden}
+.chead svg.mosaic{position:absolute;right:0;top:0;height:100%;width:55%;opacity:.55;pointer-events:none}
+.chead .row{position:relative;display:flex;gap:16px;align-items:center}
+.chead .ico{flex:none;width:68px;height:68px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 4px rgba(255,255,255,.35)}
+.chead .ico svg{width:46px;height:46px}
+.chead h2{font-family:"Alegreya",Georgia,serif;font-size:clamp(1.6rem,4.5vw,2.2rem);margin:0;line-height:1.1}
+.chead .num{font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.cbody{background:var(--paper);border:2px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:8px 18px 24px}
+.topic{margin:22px 0 4px}
+.topic h3{font-family:"Alegreya",Georgia,serif;font-size:1.35rem;margin:0 0 4px;color:var(--c);display:flex;align-items:center;gap:10px}
+.topic h3::before{content:"";width:12px;height:12px;background:var(--c);transform:rotate(45deg);border-radius:2px;flex:none}
+.q{border:1.5px solid var(--line);border-radius:14px;padding:14px 16px 12px;margin:12px 0;background:#fbfdfe}
+.q legend{padding:0 6px;font-weight:700;font-size:1.05rem}
+.q .qn{display:inline-block;background:var(--c);color:#fff;border-radius:8px;padding:0 8px;margin-right:6px;font-size:.95rem}
+.q .kind{display:block;text-align:right;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.opt:hover{border-color:var(--c)}
+.opt input{margin-top:.38em;accent-color:var(--c);width:18px;height:18px;flex:none}
+.opt.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
+.tf .opts{grid-template-columns:1fr 1fr}
+.q.done .opt{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.fb{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;font-size:.98rem}
+.q.done .fb{display:block}
+.fb.ok{background:var(--okbg);border-left:5px solid var(--ok)}
+.fb.no{background:var(--badbg);border-left:5px solid var(--bad)}
+.fb b{display:block}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+button.btn{font:inherit;font-weight:700;border:none;border-radius:12px;padding:12px 22px;cursor:pointer;background:var(--c);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+button.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+button.btn.alt{background:#fff;color:var(--c);border:2px solid var(--c);box-shadow:none}
+.result{display:none;margin-top:18px;border-radius:14px;padding:16px 18px;background:#eef6f8;border:2px solid var(--c)}
+.result.show{display:block}
+.result .big{font-family:"Alegreya",Georgia,serif;font-size:2rem;font-weight:700;line-height:1}
+.bar{height:12px;border-radius:99px;background:#dbe8ec;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c);width:0;transition:width .6s}
+.note{font-size:.88rem;color:var(--muted);margin-top:26px;text-align:center}
+@media (max-width:620px){
+  body{font-size:17px}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .tf .opts{grid-template-columns:1fr}
+  .hero{padding-bottom:60px}
+  .hero svg.mosaic{width:100%;opacity:.5}
+  .chead .ico{width:56px;height:56px}
+  .chead .ico svg{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tips{margin:18px 0 0;padding:14px 18px 12px;border-radius:14px;background:color-mix(in srgb,var(--c) 9%,#fff);border:2px solid var(--c)}
+.tips h3{margin:0 0 6px;font-family:"Alegreya",Georgia,serif;font-size:1.35rem;color:var(--c)}
+.tips ul{margin:0;padding-left:20px}
+.tips li{margin:5px 0}
+.pinfo{margin:16px 0 0;padding:10px 14px;border-radius:12px;background:#eef6f8;border:1.5px dashed var(--c);font-size:.95rem}
+</style>
+</head>
+<body>
+<header class="hero">
+  <svg class="mosaic" id="heroMosaic" viewBox="0 0 600 300" preserveAspectRatio="xMaxYMin slice" aria-hidden="true"></svg>
+  <div class="inner">
+    <h1>Uskonto – harjoituskoe</h1>
+    <p>7. luokka · neljä kappaletta: uskonto ja uskonnottomuus, kristinusko, juutalaisuus ja islam. Jokaisesta kappaleesta arvotaan 10 kysymystä koko kirjan aiheista. Vastaa ja paina lopuksi <b>Tarkista vastaukset</b>.</p>
+    <span class="scorechip" id="totalChip">Pisteet yhteensä: –</span>
+  </div>
+</header>
+<main>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="panels"></div>
+  <p class="note">Vastaukset näkyvät vasta, kun painat Tarkista vastaukset -nappia. Kysymykset perustuvat oppikirjan teksteihin. Aloita alusta -napilla saat uudet kysymykset.</p>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- SVG-kuvakkeet (yleiset uskontosymbolit) ---------- */
+var ICONS = {
+  globe:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="#d9eef3" stroke="#1b3d6d" stroke-width="3"/><path d="M14 24c6-4 10-3 14 0s2 8-2 10-8 6-4 12M36 12c2 6 8 6 12 10s4 8 0 12-2 10-6 14" fill="none" stroke="#1b3d6d" stroke-width="3" stroke-linecap="round"/><ellipse cx="32" cy="32" rx="11" ry="26" fill="none" stroke="#1b3d6d" stroke-width="2" opacity=".5"/></svg>',
+  cross:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="#fff" stroke="#2c5fa8" stroke-width="3" stroke-dasharray="1.5 4" stroke-linecap="round"/><path d="M27 10h10v15h15v10H37v21H27V35H12V25h15z" fill="#1f4f94"/></svg>',
+  star:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="#fff" stroke="#4b3f9e" stroke-width="3" stroke-dasharray="1.5 4" stroke-linecap="round"/><path d="M14.6 25h34.8L32 54zM14.6 39h34.8L32 10z" fill="none" stroke="#3a2f86" stroke-width="3.2" stroke-linejoin="round"/></svg>',
+  crescent:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="#fff" stroke="#6d3a8f" stroke-width="3" stroke-dasharray="1.5 4" stroke-linecap="round"/><path d="M38 14a18 18 0 1 0 0 36 15 15 0 1 1 0-36z" fill="#58307a"/><path d="M44 24l2.2 5 5.3.5-4 3.6 1.2 5.3-4.7-2.8-4.7 2.8 1.2-5.3-4-3.6 5.3-.5z" fill="#58307a"/></svg>'
+};
+
+/* ---------- Kysymykset ---------- */
+var TF = ["Oikein","Väärin"];
+function M(q,r,w1,w2,w3,e){ return {t:"mc",q:q,o:[r,w1,w2,w3],a:0,e:e}; }
+function T(q,b,e){ return {t:"tf",q:q,o:TF,a:b?0:1,e:e}; }
+function P(name,qs){ return {name:name,qs:qs}; }
+var CHAPTERS = [
+{
+ id:"k1", num:"Kappale 1", title:"Uskonto ja uskonnottomuus", short:"Uskonto ja uskonnottomuus", color:"#1f8ea3", icon:"globe",
+ tips:["Uskonnon ja omantunnon vapaus on yksi tärkeimmistä ihmisoikeuksista: siihen kuuluu oikeus harjoittaa uskontoa tai olla harjoittamatta sitä.", "Uskontoja tutkitaan monista näkökulmista: myytit, riitit, kokemukset ja yhteisöt, opit ja moraali sekä rakennukset, esineet ja taide. Tutkimus ei ota kantaa jumalan olemassaoloon.", "Riittejä on kolmea lajia: kalenteririitit (esim. joulu, pääsiäinen), siirtymäriitit (elämänvaiheet) ja kriisiriitit (surun hetki).", "Uskontoja ryhmitellään jumalakäsityksen (monoteismi, polyteismi) ja leviämistavan (etniset ja universaalit uskonnot) mukaan.", "Maallistuminen vähentää uskonnon merkitystä ja on tyypillistä Länsi-Euroopalle. Uskonnottomuuteen kuuluvat mm. ateismi ja agnostisismi."],
+ topics:[
+  P("Nimenanto ja uskonnot arjessa",[
+   M("Miksi Maria on yleinen nimi sekä kristittyjen että muslimien parissa?","Maria-niminen hahmo esiintyy molempien uskontojen pyhissä kertomuksissa","Maria on islamin perustajan nimi","Maria on hindulaisen Lakšmi-jumalattaren toinen nimi","Raamattu ja Koraani kehottavat nimeämään tyttölapset Mariaksi","Kirjan mukaan Maria on yleinen nimi, koska Maria-niminen hahmo esiintyy molempien uskontojen pyhissä kertomuksissa."),
+   T("Muslimimaissa Muhammad on suosittu nimi, koska se on islamin perustajan nimi.",true,"Oikein. Muslimimaissa Muhammad on suosikkinimien kärjessä, koska se on islamin perustajan nimi."),
+   M("Minkä jumalattaren mukaan moni tyttö on saanut nimensä Intiassa?","Lakšmin","Marian","Ruutin","Gabrielin","Intiassa moni tyttö on saanut nimensä hindulaisen Lakšmi-jumalattaren mukaan."),
+   T("Lapsen nimi voi olla peräisin myös luonnosta tai kirjallisuudesta, eikä aina uskonnollisista kertomuksista.",true,"Oikein. Monet vanhemmat ottavat lapsensa nimen muualta kuin uskonnollisista kertomuksista.")
+  ]),
+  P("Uskonnonvapaus ja ihmisoikeudet",[
+   T("Uskonnon ja omantunnon vapauteen kuuluu oikeus olla osallistumatta uskonnonharjoitukseen.",true,"Oikein. Uskonnon ja omantunnon vapauteen kuuluu oikeus joko harjoittaa omaa uskontoa tai olla osallistumatta uskonnonharjoitukseen."),
+   M("Mihin ihmisoikeudet on kirjattu?","YK:n laatimaan ihmisoikeuksien yleismaailmalliseen julistukseen","Raamattuun","Koraaniin","Eurooppalaisten kirkkojen yhteiseen sopimukseen","Ihmisoikeudet on kirjattu YK:n ihmisoikeuksien yleismaailmalliseen julistukseen. Ne on sisällytetty myös eri maiden omiin lakeihin."),
+   T("Nykyään kenenkään Euroopassa asuvan ei ole pakko kuulua kirkkoon tai uskoa tietyllä tavalla.",true,"Oikein. Eurooppa on perinteisesti ollut pääosin kristillinen, mutta nykyään kenenkään ei ole pakko kuulua kirkkoon."),
+   T("Eurooppaan muuttaneet ihmiset eivät ole tuoneet mukanaan omia uskontojaan.",false,"Väärin. Eurooppaan on muuttanut paljon ihmisiä eri puolilta maailmaa, ja he ovat tuoneet omia uskontojaan. Vaikuttavien uskontojen lukumäärä on kasvanut.")
+  ]),
+  P("Uskontoja tutkitaan monista näkökulmista",[
+   T("Tieteellinen uskonnontutkimus ottaa kantaa siihen, onko jumalaa olemassa.",false,"Väärin. Tieteellinen uskonnontutkimus ei ota kantaa jumalan olemassaoloon, vaan tutkii ihmisiä ja heidän uskonnollisia kokemuksiaan, käsityksiään ja toimintaansa."),
+   M("Mikä seuraavista ei ole kirjan kaavion mukainen näkökulma uskontoihin?","Tähtitiede","Myytit","Riitit","Opit ja moraali","Kaavion näkökulmat ovat myytit, riitit, kokemukset ja yhteisöt, opit ja moraali sekä rakennukset, esineet ja taide."),
+   T("Uskonnot vaikuttavat siihen, minä päivinä ihmisillä on vapaata koulusta ja töistä.",true,"Oikein. Esimerkiksi juhlapäivät vaikuttavat vapaapäiviin."),
+   M("Mitä uskonnontutkija voi kysyä tutkiessaan uskontoja?","Miten uskonnot näkyvät rakennuksissa ja esineissä ja minkälaisia kertomuksia kannattajat kertovat","Onko jumala olemassa","Mikä uskonto on ainoa oikea","Kuinka paljon jumalia kuuluu palvoa","Uskonnontutkija kysyy esimerkiksi, miten uskonnot näkyvät rakennuksissa ja esineissä sekä minkälaisia kertomuksia kannattajat kertovat. Hän ei ota kantaa jumalan olemassaoloon.")
+  ]),
+  P("Pyhät rakennukset, esineet ja taide",[
+   M("Mitä pyhällä tarkoitetaan?","Tavallisesta elämästä erotettuja asioita, joita kunnioitetaan ja arvostetaan","Vain kirkossa pidettävää jumalanpalvelusta","Uskonnollisen yhteisön johtajaa","Uskonnon pyhää kirjaa","Pyhä on tavallisesta elämästä erotettuja asioita, joita kunnioitetaan ja arvostetaan."),
+   M("Miksi islamin piirissä on kehittynyt taidokas kalligrafian perinne?","Koska islamissa ei suosita kuvien tekoa","Koska muslimit eivät osaa maalata","Koska Koraani on kielletty kirjoittamasta","Koska moskeijoissa ei ole seiniä","Koska islamissa ei suosita kuvien tekoa, sen piirissä on kehittynyt kalligrafian eli kauniin käsinkirjoittamisen perinne."),
+   T("Moskeijoiden ja buddhalaisten temppeleiden pyhyyttä yleensä kunnioitetaan ottamalla kengät jalasta.",true,"Oikein. Kengät otetaan yleensä jalasta pyhiin rakennuksiin astuttaessa."),
+   M("Mitä Latinalaisen Amerikan kristityissä maissa on usein autoissa?","Pyhien ihmisten kuvia, joiden toivotaan tuovan turvaa matkanteossa","Hanukka-kynttelikkö","Rukousmatto","Koraani","Autoissa on usein pyhien ihmisten kuvia, joiden toivotaan tuovan turvaa matkanteossa.")
+  ]),
+  P("Myytit",[
+   M("Mitä myytit ovat?","Perustavia kertomuksia, jotka kuvaavat esimerkiksi sitä, miten maailma on syntynyt","Toistuvia juhlavia tapahtumia, jotka rytmittävät vuodenkiertoa","Käsityksiä oikeasta ja väärästä","Uskontojen pyhiä rakennuksia","Myytit ovat perustavia kertomuksia, jotka kuvaavat esimerkiksi sitä, miten maailma on syntynyt. Niissä kerrotaan usein jumalien tai uskonnollisten esikuvien elämästä sekä yliluonnollisista tapahtumista."),
+   M("Mikä seuraavista on kirjan esimerkki yliluonnollisesta tapahtumasta?","Jeesus kävelee Raamatun kertomuksessa veden päällä","Vanhemmat valitsevat lapselle nimen","Muslimi riisuu kengät moskeijassa","Kristityt kokoontuvat sunnuntaina","Yliluonnollisia ovat tapahtumat, joita ei voi järjellä selittää. Esimerkiksi Jeesus kävelee Raamatun kertomuksessa veden päällä."),
+   M("Mitä Siddhartha Gautama Buddha teki etsiessään vastauksia kysymyksiin kärsimyksestä ja kuolemasta?","Hän luopui rikkaudesta","Hän perusti Vatikaanin","Hän kirjoitti Koraanin","Hän johti bussiboikottia","Buddhalaisuuden perustaja Siddhartha Gautama Buddha luopui rikkaudesta etsiäkseen vastauksia kysymyksiin siitä, miksi maailmassa on kärsimystä ja kuolemaa."),
+   M("Millaisia uskonnolliset esikuvat ovat?","Ihmisiä, jotka ovat viettäneet esimerkillistä elämää ja nähneet itsensä jonkin ihmistä suuremman asian palvelijana","Ihmisiä, jotka ovat pyrkineet olemaan huomion keskipisteenä","Ihmisiä, jotka ovat keränneet itselleen suuria rikkauksia","Ihmisiä, jotka eivät ole uskoneet mihinkään","Uskonnolliset esikuvat eivät ole itse pyrkineet huomion keskipisteeksi, vaan ovat nähneet itsensä jonkin ihmistä suuremman asian palvelijana."),
+   M("Minkä ensimmäisen ihmisen Jumala loi maasta juutalaisuuden, kristinuskon ja islamin myytin mukaan?","Aadamin","Abrahamin","Mooseksen","Muhammadin","Juutalaisuudessa, kristinuskossa ja islamissa kerrotaan myyttiä ensimmäisestä ihmisestä, Aadamista, jonka Jumala loi maasta.")
+  ]),
+  P("Riitit",[
+   T("Pääsiäinen on esimerkki kalenteririitistä ja rippileiri on Suomessa esimerkki siirtymäriitistä.",true,"Oikein. Pääsiäinen ja joulu ovat kalenteririittejä, ja Suomessa siirtymäriitteinä toimivat esimerkiksi eri kirkkojen järjestämät rippileirit."),
+   M("Mitä siirtymäriitit ovat?","Ihmisen elämänvaiheiden juhlimista","Vuoden kiertoon liittyviä juhlia","Riittejä, jotka auttavat käsittelemään sairautta tai onnettomuutta","Uskontojen pyhiä kirjoja","Vuoden kiertoon liittyvien juhlien eli kalenteririittien lisäksi on tapana juhlia ihmisen elämänvaiheita. Niitä kutsutaan siirtymäriiteiksi."),
+   M("Mitä kriisiriitit auttavat käsittelemään?","Surua ja kärsimystä, esimerkiksi sairautta tai läheisen kuolemaa","Vuodenaikojen vaihtumista","Lapsen nimenantoa","Kevään tuloa","Kriisiriitit auttavat surun ja kärsimyksen hetkellä, esimerkiksi sairauden tai läheisen kuoleman käsittelyssä."),
+   T("Juutalaiset kokoontuvat sapattina yhteiselle aterialle sen muistoksi, että Jumala loi maailman.",true,"Oikein. Sapattiateria on esimerkki uskontoihin kuuluvista riiteistä."),
+   M("Mitä muistellaan kristittyjen jumalanpalveluksessa vietettävällä ehtoollisella?","Jeesuksen kuolemaa","Maailman syntyä","Israelin kansan vapautumista Egyptistä","Muhammadin syntymää","Jeesuksen kuolemaa muistetaan jumalanpalveluksessa vietettävällä ehtoollisella.")
+  ]),
+  P("Uskonnolliset kokemukset ja yhteisöt",[
+   M("Kenen uskonnolliset näyt Arabian niemimaalla sysäsivät liikkeelle islamin synnyn?","Profeetta Muhammadin","Siddhartha Gautama Buddhan","Jeesuksen","Martin Luther Kingin","Islamin perustajan profeetta Muhammadin uskonnolliset näyt Arabian niemimaalla sysäsivät liikkeelle kehityskulut, jotka synnyttivät islamin."),
+   M("Mikä uskonto syntyi Siddhartha Gautama Buddhan uskonnollisen kokemuksen seurauksena Intiassa?","Buddhalaisuus","Islam","Juutalaisuus","Kristinusko","Siddhartha Gautama Buddhan uskonnollinen kokemus Intiassa sysäsi liikkeelle kehityskulun, joka synnytti buddhalaisuuden."),
+   T("Uskonnolliset yhteisöt voivat eristäytyä muusta maailmasta tai toimia aktiivisesti yhteiskunnassa ja vaikuttaa politiikan keinoin.",true,"Oikein. Molemmat vaihtoehdot ovat mahdollisia."),
+   T("Yhdysvaltain presidentit, kuten Barack Obama, ovat pitäneet puheita kirkoissa ja rukoilleet Jumalalta opastusta maan johtamiseen.",true,"Oikein. Tämä on kirjan esimerkki siitä, miten uskonnolliset kokemukset vaikuttavat politiikkaan.")
+  ]),
+  P("Uskontojen oppi ja moraali",[
+   M("Mitä uskontunnustus on?","Uskonnon opin kiteytys, joka lausutaan ääneen","Uskonnon pyhä rakennus","Vuosittainen juhla","Rukousmatto","Monissa uskonnoissa opit kiteytetään uskontunnustukseen, joka lausutaan ääneen esimerkiksi kristittyjen jumalanpalveluksessa tai muslimien rukoushetkissä."),
+   M("Mitä kristityt tunnustavat lausumalla uskontunnustuksen?","Jumalan kolmiyhteyden eli uskon Isään, Poikaan ja Pyhään Henkeen","Että Muhammad on viimeinen profeetta","Että sapatti on viikon seitsemäs päivä","Että Jumalia on monta","Lausumalla uskontunnustuksen kristityt tunnustavat Jumalan kolmiyhteyden: uskon Isään, Poikaan ja Pyhään Henkeen."),
+   M("Mitä moraali tarkoittaa?","Käsityksiä oikeasta ja väärästä","Uskonnollista juhlaa","Pyhää rakennusta","Uskontojen ryhmittelyä","Uskontojen säännöistä rakentuu moraali eli käsityksiä oikeasta ja väärästä."),
+   T("Nykyään suurin osa uskonnollisten ääriliikkeiden kannattajista ajaa asiaansa väkivalloin.",false,"Väärin. Vain pieni osa ääriliikkeiden kannattajista ajaa asiaansa väkivalloin. Monet uskontojen kannattajat osallistuvat rauhan rakentamiseen, ihmisoikeuksien puolustamiseen ja ympäristöongelmien ratkaisemiseen."),
+   M("Minkä keräyksen Suomen evankelis-luterilainen kirkko järjestää vuosittain rahan keräämiseksi apua tarvitseville?","Yhteisvastuukeräyksen","Almuveron","Pyhiinvaelluskeräyksen","Ramadan-keräyksen","Suomessa evankelis-luterilainen kirkko järjestää vuosittain Yhteisvastuukeräyksen, jolla kerätään rahaa apua tarvitseville."),
+   M("Mihin tarkoitukseen burkini on suunniteltu?","Musliminaisille, jotka noudattavat Koraanin pukeutumisohjeita myös uimaltaalla","Pyhiinvaellukselle Mekkaan","Kristittyjen kastetilaisuuteen","Juutalaisten häihin","Koraani sisältää ohjeita pukeutumisesta. Osa musliminaisista noudattaa niitä myös uimaltaalla, ja heidän tarpeisiinsa on suunniteltu burkini-uima-asu.")
+  ]),
+  P("Rauhanmerkki",[
+   T("Rauhanmerkin ensimmäinen käyttötarkoitus oli ydinaseiden vastustaminen.",true,"Oikein. Merkin suunnitteli 1950-luvulla brittiläinen ydinaseita vastustava järjestö."),
+   T("Rauhanmerkin juuret liittyvät kristinuskoon.",false,"Väärin. Rauhanmerkin juuret eivät liity mihinkään uskontoon, ja siksi rauhanpuolustajat käyttävät sitä uskontokuntaan katsomatta."),
+   M("Mitä rauhan symboleita varhaiset kristityt käyttivät?","Oliivipuun oksaa ja kyyhkyä","Tähteä ja kuunsirppiä","Kuutta kynttilää","Seitsenhaaraista tähteä","Varhaiset kristityt käyttivät rauhan merkkeinä muun muassa oliivipuun oksaa ja kyyhkyä."),
+   M("Mikä ympäristöjärjestö käyttää rauhanmerkkiä taistelussaan luonnon pelastamiseksi?","Greenpeace","Vapaa-ajattelijat","Yhteisvastuu","Suomen Islamilainen Neuvosto","Ympäristöjärjestö Greenpeace käyttää rauhanmerkkiä taistelussaan luonnon pelastamiseksi.")
+  ]),
+  P("Uskontojen ryhmittely",[
+   M("Mikä seuraavista uskonnoista on polyteistinen eli siinä uskotaan moniin eri jumaliin?","Hindulaisuus","Juutalaisuus","Kristinusko","Islam","Hindulaisuus on polyteistinen uskonto. Juutalaisuus, kristinusko ja islam ovat monoteistisia eli niissä jumalia on yksi."),
+   M("Mitkä seuraavista ovat kirjan mukaan universaaleja uskontoja, jotka ovat kaikille avoimia?","Kristinusko ja islam","Juutalaisuus ja hindulaisuus","Hindulaisuus ja šintolaisuus","Juutalaisuus ja šintolaisuus","Kristinusko ja islam ovat universaaleja uskontoja. Juutalaisuus, hindulaisuus ja šintolaisuus ovat etnisiä uskontoja."),
+   M("Mitä etninen uskonto tarkoittaa?","Uskontoa, joka on osa jonkin tietyn kansan perinteitä","Uskontoa, johon kuka tahansa voi liittyä","Uskontoa, jossa ei uskota jumaliin","Uskontoa, jota harjoitetaan vain Euroopassa","Etniset uskonnot ovat osa jonkin tietyn kansan perinteitä. Esimerkkejä ovat juutalaisuus, hindulaisuus ja šintolaisuus."),
+   M("Mitä teistiset uskonnot ovat?","Uskontoja, joissa usko jumalaan on keskeistä","Uskontoja, joissa ei uskota jumaliin","Vain Länsi-Euroopan uskontoja","Uusia uskontoja, jotka ovat syntyneet viime vuosina","Uskontoja, joissa usko jumalaan on keskeistä, kutsutaan teistisiksi uskonnoiksi. Ne jaetaan monoteistisiin ja polyteistisiin."),
+   T("Maailmanuskontoihin luetaan yleensä muun muassa hindulaisuus, buddhalaisuus ja šintolaisuus.",true,"Oikein. Maailmanuskonnoiksi luetaan yleensä juutalaisuus, kristinusko, islam, hindulaisuus, buddhalaisuus, taolaisuus, kungfutselaisuus ja šintolaisuus."),
+   T("Uusia uskontoja syntyy koko ajan.",true,"Oikein. Maailmanuskonnot ovat tuhansia vuosia vanhoja, mutta uusia uskontoja syntyy koko ajan.")
+  ]),
+  P("Maallistuminen",[
+   M("Mitä maallistuminen tarkoittaa?","Kehityskulkua, jonka seurauksena uskonnon merkitys vähenee tai lakkaa kokonaan","Uskonnon leviämistä uusille alueille","Uskontojen ryhmittelyä jumalakäsitysten mukaan","Uskonnon ja omantunnon vapautta","Maallistuminen tarkoittaa kehityskulkua, jonka seurauksena uskonnon merkitys vähenee tai lakkaa kokonaan."),
+   T("Maallistuminen on tyypillistä nimenomaan Länsi-Euroopalle.",true,"Oikein. Muualla maailmassa uskontojen merkitys näyttää monin paikoin päinvastoin kasvaneen."),
+   T("Maallistuminen on hävittänyt uskonnot kokonaan Länsi-Euroopasta.",false,"Väärin. Maallistuminen ei ole hävittänyt uskontoja, vaan uskonnollisuus on muuttunut entistä monimuotoisemmaksi. Esimerkiksi ihmiset yhdistelevät elämässään erilaisia uskonnollisia perinteitä."),
+   M("Miten joulun merkitys on kirjan mukaan muuttunut maallistumisen myötä?","Monelle suomalaiselle se on iloinen keskitalven juhla, jossa kristillisyys näkyy vain muodollisina perinteinä","Joulua ei vietetä enää lainkaan","Joulu on muuttunut kesäjuhlaksi","Joulusta on tullut islamilainen juhla","Joulu on kristillinen juhla, jonka merkitys on maallistumisen myötä muuttunut. Monelle suomalaiselle se on iloinen keskitalven juhla.")
+  ]),
+  P("Uskonnottomuus",[
+   M("Mitä agnostikko ajattelee jumalien olemassaolosta?","Jumalien olemassaoloa on mahdotonta todistaa, mutta mahdollisuutta ei voi kokonaan sulkea pois","Jumalia ei ole olemassa, ja moraalin tulee perustua ihmisen omaan järkeen","Jumalia on monta, ja heillä on erilaisia tehtäviä ja voimia","Jumala loi maailman ja puuttuu ihmisten elämään","Agnostikon mielestä jumalien olemassaoloa on mahdotonta todistaa, mutta mahdollisuutta, että jumalia olisi olemassa, ei voida kokonaan sulkea pois."),
+   M("Mitä ateismi on?","Aatesuunta, jossa ei uskota jumalien olemassaoloon","Uskonto, jossa on yksi jumala","Uskonto, jossa on monta jumalaa","Kirkon jumalanpalvelus","Ateismi on aatesuunta, jossa ei uskota jumalien olemassaoloon."),
+   T("Ateistien mukaan moraalin tulisi perustua uskontojen sisältämiin sääntöihin.",false,"Väärin. Ateistien mukaan moraalin ei tulisi perustua uskontojen sääntöihin, vaan he nojautuvat ihmisten omaan järkeen ja tahtoon toimia oikein."),
+   M("Minkä nimisenä yhteisönä vapaa-ajattelijat tunnetaan Suomessa?","Vapaa-ajattelijain Liittona","Yhteisvastuuna","Suomen Islamilaisena Neuvostona","Ekumeniana","Uskonnollisesti sitoutumattomia yhteisöjä on lukuisia. Yksi niistä on vapaa-ajattelijat, joka tunnetaan Suomessa Vapaa-ajattelijain Liittona."),
+   M("Mitä uskontokuntiin kuulumattomat viettävät monesti kasteen sijaan?","Nimiäisiä, joissa sukulaiset ja ystävät juhlistavat lapsen nimenantoa","Konfirmaatiota","Hanukkaa","Pyhiinvaellusta","Uskontokuntiin kuulumattomilla on omia perinteitään. Lapsen syntymää vietetään monesti kasteen sijaan nimiäisillä.")
+  ]),
+  P("Martin Luther King",[
+   M("Minkä asian puolesta pastori Martin Luther King kampanjoi 1950- ja 1960-luvulla?","Mustaihoisten syrjinnän ja rotuerottelun lopettamiseksi","Ydinaseiden lisäämiseksi","Kristinuskon kieltämiseksi","Suomen kirjakielen luomiseksi","Martin Luther King kampanjoi Yhdysvalloissa mustaihoisten syrjinnän lakkauttamiseksi ja halusi lopettaa erityisesti eteläisissä osavaltioissa vallinneen rotuerottelun."),
+   M("Minkä tapahtuman seurauksena bussiboikotti sai alkunsa?","Rosa Parks kieltäytyi luovuttamasta linja-autossa paikkaansa valkoihoiselle miehelle","Mooses johti kansan pois Egyptistä","Paavi valittiin virkaansa","Rauhanmerkki suunniteltiin","Bussiboikotti sai alkunsa mustaihoisen Rosa Parksin kieltäydyttyä luovuttamasta linja-autossa paikkaansa valkoihoiselle miehelle."),
+   T("Martin Luther King kehotti vastustamaan rotuerottelua käyttämättä väkivaltaa.",true,"Oikein. Hän innoitti ihmisiä osoittamaan mieltään rauhanomaisesti."),
+   M("Minkä palkinnon Martin Luther King ehti saada ennen kuolemaansa?","Nobelin rauhanpalkinnon","Nobelin kirjallisuuspalkinnon","Oscar-palkinnon","Pulitzer-palkinnon","Martin Luther King ehti saada Nobelin rauhanpalkinnon ennen kuolemaansa. Hänet surmattiin 39-vuotiaana."),
+   T("Bussiboikotti päättyi, kun Yhdysvaltojen korkein oikeus julisti linja-autoissa tapahtuvan rotuerottelun perustuslain vastaiseksi.",true,"Oikein. Boikotti kesti yli vuoden.")
+  ])
+ ]
+},
+{
+ id:"k2", num:"Kappale 2", title:"Kristinusko", short:"Kristinusko", color:"#2c5fa8", icon:"cross",
+ tips:["Kristinusko kehittyi Jeesus Nasaretilaisen opetusten pohjalta, ja sillä on yli kaksi miljardia kannattajaa.", "Kaikki kristityt kastetaan jossain elämänsä vaiheessa. Konfirmaatiossa kasteessa saatu kristillisyys vahvistetaan.", "Kristityt uskovat yhteen kolmiyhteiseen Jumalaan: Isään, Poikaan ja Pyhään Henkeen.", "Raamattu jakautuu Vanhaan ja Uuteen testamenttiin. Uusi testamentti kertoo Jeesuksesta neljässä evankeliumissa.", "Kristinuskon kolme pääsuuntausta ovat katolinen, ortodoksinen ja protestanttinen kirkko. Kristinusko on levinnyt lähetystyön avulla ympäri maailmaa, ja kirkkokuntien yhteistyötä kutsutaan ekumeniaksi."],
+ topics:[
+  P("Kristinuksen synty ja levinneisyys",[
+   M("Kenen opetusten pohjalta kristinusko kehittyi?","Jeesus Nasaretilaisen","Muhammadin","Mooseksen","Martin Lutherin","Kristinusko kehittyi noin 2 000 vuotta sitten eläneen Jeesus Nasaretilaisen opetusten pohjalta."),
+   M("Mikä oli Jeesuksen oma uskonto?","Juutalaisuus","Islam","Hindulaisuus","Buddhalaisuus","Uskonnoltaan juutalainen Jeesus kiersi saarnaamassa nykyisen Israelin alueella."),
+   M("Miten Jeesus kirjan mukaan kuoli?","Hänet teloitettiin ristillä","Hän kuoli sairauteen piilopaikassa","Hänet surmattiin 39-vuotiaana","Hän kuoli pyhiinvaelluksella Mekkaan","Jeesus joutui vallanpitäjien epäsuosioon ja hänet teloitettiin ristillä."),
+   M("Mitä kristityt uskovat Jeesuksesta?","Hän on Jumalan poika, joka nousi kuolemansa jälkeen ylös ja meni taivaaseen","Hän on islamin perustaja","Hän on viimeinen profeetta, jonka jälkeen ei tule uusia","Hän on kristinuskon ensimmäinen paavi","Kristityt uskovat, että Jeesus on Jumalan poika, joka nousi kuolemansa jälkeen ylös ja meni taivaaseen."),
+   T("Kristinusko on universaali uskonto, jolla on yli kaksi miljardia kannattajaa.",true,"Oikein. Kristinusko on kaikille avoin uskonto, jolla on yli kaksi miljardia kannattajaa eri puolilla maailmaa."),
+   T("Jeesus kiersi saarnaamassa nykyisen Israelin alueella, ja häntä seurasi pieni oppilaiden joukko.",true,"Oikein. Näin kirjan alku kuvaa Jeesuksen toimintaa.")
+  ]),
+  P("Kaste",[
+   T("Kaikki kristityt kastetaan vauvoina.",false,"Väärin. Kaikki kristityt kastetaan jossain elämänsä vaiheessa, mutta osa kastetaan lapsina ja osa vasta aikuisina."),
+   M("Miten pappi kastetilaisuudessa kastaa lapsen?","Valelemalla hänen päänsä kolme kertaa vedellä ja lausumalla kastesanat","Valuttamalla kolme kertaa hiekkaa arkulle","Polkaisemalla rikki viinilasin","Leikkaamalla tupsun lapsen tukasta","Kastetilaisuuden huipennuksena pappi kastaa lapsen valelemalla hänen päänsä kolme kertaa vedellä ja lausumalla kastesanat."),
+   M("Mitä ristinmerkki lapsen otsaan ja rintaan kuvastaa kastetilaisuudessa?","Sitä, että Jeesus siunaa lapsen ja ottaa hänet oppilaakseen","Sitä, että lapsi on juutalainen","Sitä, että lapsi on täysi-ikäinen","Sitä, että lapsi saa nimen Abdullah","Ristinmerkki kuvastaa sitä, kuinka Jeesus siunaa lapsen ja ottaa hänet oppilaakseen."),
+   T("Vain kastettu ihminen voi olla kristitty ja seurakunnan jäsen.",true,"Oikein. Kaste liittää ihmisen seurakuntaan eli kristittyjen yhteisöön."),
+   T("Kaikissa kirkoissa kastetaan vain lapsia.",false,"Väärin. Joissain kirkoissa kastetaan vain aikuisia, koska niiden mukaan ihmisen tulee itse ilmaista halunsa tulla kastetuksi. Suurin osa kirkoista kastaa kuitenkin myös lapsia."),
+   M("Minkä nimen muunnos kirjan kastetilaisuuden Mika-nimi on?","Raamatussa esiintyvän enkeli Mikaelin","Enkeli Gabrielin","Mooseksen","Abrahamin","Mika on muunnos Raamatussa esiintyvästä enkeli Mikaelin nimestä.")
+  ]),
+  P("Siirtymäriitit: konfirmaatio, avioliitto ja hautajaiset",[
+   M("Mitä konfirmaatiolla tarkoitetaan?","Kasteessa saadun kristillisyyden vahvistamista, mikä Suomessa tapahtuu yleensä rippikoulun päätteeksi","Papin toimittamaa siunausta hautajaisissa","Pariskunnan vihkimistä kirkossa","Lapsen kastamista kolme kertaa vedellä","Konfirmaatiossa kasteessa saatu kristillisyys vahvistetaan. Suomessa se tapahtuu yleensä rippikoulun päätteeksi."),
+   M("Mitkä ovat ihmisen tärkeät elämänvaiheet, joihin kristityn siirtymäriitit liittyvät?","Syntymä, aikuistuminen, avioituminen ja kuolema","Joulu, pääsiäinen ja helluntai","Kaste, ehtoollinen ja saarna","Rukous, paasto ja almut","Siirtymäriitit liittyvät ihmisen tärkeisiin elämänvaiheisiin: syntymään, aikuistumiseen, avioitumiseen ja kuolemaan."),
+   M("Mikä on kristittyjen hautajaisten tärkein osa?","Papin toimittama siunaus, jossa arkulle valutetaan kolme kertaa hiekkaa","Viinilasin rikkominen","Ruumiin pesu ja hautaus ilman arkkua","Pyhiinvaellus","Tärkein hautajaisten osa on papin toimittama siunaus, joka tapahtuu valuttamalla kolme kertaa hiekkaa arkulle ja lausumalla siunaamissanat."),
+   T("Pappi voi vihkiä parin vain kirkossa.",false,"Väärin. Pappi voi vihkiä parin joko kirkossa tai jossain muussa paikassa."),
+   T("Kristityt uskovat, että avioliitossa tarvitaan ihmisten lisäksi myös Jumalan läsnäoloa.",true,"Oikein. Siksi aviopuolisoille rukoillaan vihkimistilaisuudessa Jumalan siunausta ja huolenpitoa."),
+   M("Mitä vihkisormuksen pyöreä muoto kuvaa?","Elämän loppuun asti kestävää liittoa","Kolmiyhteistä Jumalaa","Jeesuksen kahtatoista oppilasta","Vuoden kiertoa","Muinaiset roomalaiset käyttivät vihkisormuksia avioliiton merkkinä. Sormuksen pyöreä muoto kuvaa elämän loppuun asti kestävää liittoa.")
+  ]),
+  P("Jumalanpalvelus",[
+   M("Mikä on kristinuskon viikoittainen pyhäpäivä?","Sunnuntai","Lauantai","Perjantai","Torstai","Kristinuskon viikoittainen pyhäpäivä on sunnuntai, jolloin osa kristityistä kokoontuu jumalanpalvelukseen kirkossa."),
+   M("Mitä kristityt nauttivat ehtoollisella?","Pala leipää ja tilkka viiniä","Munkkeja ja öljyä","Lihaa ja maitoa","Kuivattuja taateleita","Ehtoollisella nautitaan pala leipää ja tilkka viiniä, jotka muistuttavat Jeesuksen ristinkuolemasta."),
+   M("Mikä on saarna?","Papin opetuspuhe seurakunnan jäsenille","Rukous, jonka sanat löytyvät Raamatusta","Kirkon pyhin paikka","Kirkon ulkopuolella oleva risti","Pappi pitää jumalanpalveluksessa saarnan, joka on hänen opetuspuheensa seurakunnan jäsenille."),
+   M("Mikä on kirkon pyhin paikka?","Kirkon etuosassa sijaitseva alttari","Kirkonkello","Kirkon ulkopuolella oleva risti","Saarnatuoli","Kirkon pyhin paikka on sen etuosassa sijaitseva alttari. Sieltä käsin pappi toimittaa suurimman osan jumalanpalveluksesta."),
+   T("Kirkonkelloja soitetaan jumalanpalveluksen alkamisen merkiksi.",true,"Oikein. Kirkon erottaa ulkopuolella olevasta rististä, ja ulkopuolella ovat usein myös kirkonkellot.")
+  ]),
+  P("Kristilliset juhlapäivät",[
+   M("Mitä kristityt juhlivat helluntaina?","Sitä, että Pyhä Henki laskeutui taivaasta ja kristillinen seurakunta sai alkunsa","Jeesuksen syntymää","Jeesuksen ylösnousemusta kuolleista","Jeesuksen viimeistä ateriaa oppilaidensa kanssa","Helluntaita vietetään viisikymmentä päivää pääsiäisen jälkeen sen kunniaksi, että Pyhä Henki laskeutui Raamatun mukaan taivaasta ja kristillinen seurakunta sai alkunsa."),
+   M("Mitä kristityt juhlivat jouluna?","Jeesuksen syntymää","Jeesuksen ylösnousemusta","Pyhän Hengen laskeutumista","Marian ilmestymistä","Jouluna juhlitaan Jeesuksen syntymää."),
+   M("Mitä pääsiäisenä kristityt muistelevat?","Jeesuksen kuolemaa ja ylösnousemusta kuolleista","Jeesuksen syntymää","Pyhän Hengen laskeutumista","Raamatun suomentamista","Pääsiäisenä muistellaan Jeesuksen kuolemaa ja hänen ylösnousemistaan kuolleista."),
+   T("Helluntaita vietetään viisikymmentä päivää pääsiäisen jälkeen.",true,"Oikein. Joulu, pääsiäinen ja helluntai rytmittävät kristittyjen kirkkovuotta.")
+  ]),
+  P("Rukous ja ristinmerkki",[
+   M("Mitä kolme sormea tarkoittavat ristinmerkissä?","Uskoa kolmiyhteiseen Jumalaan","Kolmea pääsuuntausta: katolista, ortodoksista ja protestanttista","Kolmea juhlaa: joulua, pääsiäistä ja helluntaita","Jeesuksen kolmea ensimmäistä oppilasta","Ristinmerkissä kosketetaan kolmella sormella otsaa, sydäntä ja hartioita. Kolme sormea ovat merkki uskosta kolmiyhteiseen Jumalaan."),
+   M("Mihin otsan, sydämen ja hartioiden koskettaminen ristinmerkissä viittaa?","Ajatuksiin, tunteisiin ja tekoihin","Isään, Poikaan ja Pyhään Henkeen","Kasteeseen, ehtoolliseen ja konfirmaatioon","Syntymään, avioitumiseen ja kuolemaan","Otsan koskettaminen viittaa ajatuksiin, sydämen tunteisiin ja hartioiden tekoihin. Ristinmerkillä nämä osat omistetaan Jumalalle."),
+   M("Mikä on yksi kristittyjen keskeisimmistä rukouksista?","Isä meidän","Ave Maria -juhla","Uskontunnustus arabiaksi","Sapattirukous","Yksi keskeisimmistä rukouksista on Isä meidän, jonka sanat löytyvät Raamatusta."),
+   T("Kristitty voi rukoilla milloin ja missä vain.",true,"Oikein. Rukous voi olla vapaata puhetta, ja myös kynttilän sytyttäminen tai hiljaa oleminen voivat olla tapoja rukoilla.")
+  ]),
+  P("Kolmiyhteinen Jumala",[
+   M("Keitä ovat kolmiyhteisen Jumalan kolme persoonaa?","Isä, Poika ja Pyhä Henki","Isä, Äiti ja Lapsi","Mooses, Jeesus ja Muhammad","Gabriel, Mikael ja Maria","Jumalalla on kolme persoonaa, jotka ovat Isä, Poika ja Pyhä Henki."),
+   T("Kristinuskossa uskotaan kolmeen eri jumalaan.",false,"Väärin. Kristittyjen käsityksen mukaan on olemassa yksi Jumala, joka on kolmiyhteinen."),
+   M("Mikä kolmiyhteisen Jumalan osa synnyttää uskon Jumalaan ja tukee sitä?","Pyhä Henki","Isä","Poika","Enkeli Gabriel","Pyhä Henki synnyttää uskon Jumalaan ja tukee sitä. Isä loi maailman, ja Jumala tuli ihmiseksi Jeesuksessa.")
+  ]),
+  P("Synti, pelastus ja Jeesuksen opetus",[
+   M("Mitä kristityt uskovat Jeesuksen tehneen kuolemalla ristillä?","Sovittaneen ihmisten synnit heidän puolestaan","Perustaneensa Vatikaanin","Antaneensa kymmenen käskyä","Luoneensa maailman","Kristityt uskovat, että Jeesus sovitti ihmisten synnit kuolemalla ristillä. Siksi ihmiset voivat saada syntinsä anteeksi ja pelastua."),
+   M("Mitä synti kristinuskossa tarkoittaa?","Väärää tekoa","Pyhää rakennusta","Uskonnollista juhlaa","Rukousta","Kukaan ei ole täydellinen, vaan kaikki tekevät syntejä eli vääriä tekoja."),
+   M("Mitä rakkauden kaksoiskäskyssä kehotetaan?","Rakastamaan Jumalaa yli kaiken ja lähimmäisiä kuten itseä","Kastattamaan jokainen lapsi kolme kertaa","Rukoilemaan viisi kertaa päivässä","Viettämään lepopäivää viikon seitsemäntenä päivänä","Jeesus tiivisti moraalisen opetuksensa rakkauden kaksoiskäskyyn: ihmisten tulee rakastaa Jumalaa yli kaiken ja lähimmäisiään kuten itseään."),
+   M("Minkä periaatteen Jeesus Raamatun mukaan muotoili sanoin ”Kaikki minkä tahdotte ihmisten tekevän teille, tehkää te heille”?","Kultaisen säännön","Rakkauden kaksoiskäskyn","Uskontunnustuksen","Isä meidän -rukouksen","Lause tunnetaan kristinuskossa kultaisena sääntönä."),
+   M("Missä taivasten valtakunta toteutuu Jeesuksen puheiden mukaan?","Siellä, missä ihmiset kohtelevat toisiaan rakastavasti ja oikeudenmukaisesti","Vain kirkossa sunnuntaisin","Vain Jerusalemissa","Vain Vatikaanissa","Jeesus puhui usein taivasten valtakunnasta, joka toteutuu siellä, missä ihmiset kohtelevat toisiaan rakastavasti ja oikeudenmukaisesti.")
+  ]),
+  P("Enkelit",[
+   M("Mitä enkelit ovat kirjan mukaan?","Jumalan luomia henkiolentoja, jotka toimivat hänen sanansaattajinaan","Kirkon pappeja","Raamatun kirjoittajia","Ortodoksisen kirkon maalauksia","Enkelit ovat Jumalan luomia henkiolentoja, jotka toimivat hänen sanansaattajinaan."),
+   T("Usko enkeleihin kuuluu kristinuskon lisäksi myös juutalaisuuteen ja islamiin.",true,"Oikein. Kristinuskon ohella usko enkeleihin kuuluu myös juutalaisuuteen ja islamiin."),
+   T("Tutkimusten mukaan yli puolet suomalaisista uskoo enkeleihin.",true,"Oikein. Näin kirja kertoo."),
+   M("Mitä monet ajattelevat suojelusenkelistä?","Että jokaisella ihmisellä on oma suojelusenkelinsä","Että suojelusenkeli on vain papeilla","Että suojelusenkeli on kirkon johtaja","Että suojelusenkeli on Raamatun luku","Yksi enkelien tehtävistä on suojella ja varjella ihmisiä. Monet ajattelevat, että jokaisella ihmisellä on oma suojelusenkelinsä.")
+  ]),
+  P("Raamattu",[
+   M("Mistä Uuden testamentin neljä evankeliumia kertovat?","Jeesuksen elämästä, kuolemasta ja ylösnousemuksesta","Maailman luomisesta ja synnin tulosta maailmaan","Israelin kansan vaiheista","Maailmanlopun tapahtumista","Uusi testamentti kertoo Jeesuksen elämästä, kuolemasta ja ylösnousemuksesta. Näitä vaiheita on kuvattu neljässä evankeliumissa."),
+   M("Mihin kahteen osaan Raamattu jakautuu?","Vanhaan testamenttiin ja Uuteen testamenttiin","Tooraan ja Koraaniin","Evankeliumeihin ja suuriin","Isään ja Poikaan","Raamattu on jaettu kahteen osaan: Vanhaan testamenttiin ja Uuteen testamenttiin."),
+   M("Miksi Vanhassa testamentissa kuvataan Israelin kansan eli juutalaisten historiaa?","Koska kristityt ovat ottaneet juutalaisten pyhiä kirjoituksia omaan Raamattuunsa","Koska Raamattu on kirjoitettu Israelissa viime vuosisadalla","Koska juutalaiset ovat kirjoittaneet Uuden testamentin","Koska Jeesus kirjoitti sen itse","Vanhan testamentin kuvaus Israelin kansan vaiheista johtuu siitä, että kristityt ovat ottaneet juutalaisten pyhiä kirjoituksia omaan Raamattuunsa."),
+   M("Kenen kristityt uskovat olevan Vanhan testamentin ennustusten lupaama Messias eli Vapahtaja?","Jeesuksen","Muhammadin","Paavin","Enkeli Gabrielin","Kristityt uskovat, että Jeesus oli ennustusten lupaama Messias."),
+   M("Mihin kirjaan Uusi testamentti päättyy?","Ilmestyskirjaan, jossa kuvataan maailmanlopun tapahtumia","Ensimmäiseen Mooseksen kirjaan","Koraaniin","Isä meidän -rukoukseen","Uusi testamentti päättyy Ilmestyskirjaan, jossa kuvataan maailmanlopun tapahtumia."),
+   T("Sana evankeliumi tarkoittaa sananmukaisesti ilosanomaa eli hyvää sanomaa.",true,"Oikein. Evankeliumeja on neljä.")
+  ]),
+  P("Katolinen kirkko",[
+   M("Mitä kirkkokuntaa paavi johtaa Vatikaanista käsin?","Katolista kirkkoa","Ortodoksista kirkkoa","Luterilaista kirkkoa","Anglikaanista kirkkoa","Katolisuuden pääpaikka on Roomassa sijaitseva pieni valtio Vatikaani, josta käsin paavi johtaa katolista kirkkoa."),
+   M("Mikä kirkkokunta on kristittyjen suurin?","Katolinen kirkko, jossa on yli miljardi kannattajaa","Ortodoksinen kirkko, jossa on noin 260 miljoonaa kannattajaa","Protestanttiset kirkot, joissa on noin 800 miljoonaa kannattajaa","Reformoitu kirkko","Suurin osa kristityistä kuuluu katoliseen kirkkoon. Katolilaisia on maailmassa yli miljardi."),
+   M("Mitä ripissä tapahtuu katolisessa kirkossa?","Ihminen tunnustaa väärät ajatuksensa ja tekonsa papille, joka antaa synninpäästön","Ihminen tekee pyhiinvaelluksen Mekkaan","Pappi kastaa aikuisen veteen upottamalla","Perhe kokoontuu sapattiaterialle","Ripissä ihminen tunnustaa väärät ajatuksensa ja tekonsa papille, joka määrää hänelle katumustehtäviä ja antaa synninpäästön."),
+   T("Paavi Franciscus valittiin vuonna 2013 kirkon historian ensimmäiseksi eteläamerikkalaiseksi paaviksi.",true,"Oikein. Hän on kotoisin Argentiinasta."),
+   M("Missä katolilaisia on erityisesti?","Etelä-Euroopassa ja Latinalaisessa Amerikassa","Vain Suomessa","Vain Arabian niemimaalla","Vain Japanissa","Katolilaisia on erityisesti Etelä-Euroopassa ja Latinalaisessa Amerikassa.")
+  ]),
+  P("Ortodoksinen kirkko",[
+   T("Ikonit ovat ortodoksisen kirkon erityisiä maalauksia, joissa kuvataan kristinuskon pyhiä ihmisiä.",true,"Oikein. Ikoneissa kuvataan esimerkiksi Jeesuksen äitiä Mariaa."),
+   M("Milloin ortodoksinen kirkko irtaantui katolisesta kirkosta?","Noin tuhat vuotta sitten","Noin 100 vuotta sitten","1500-luvulla","Vuonna 2013","Ortodoksinen kirkko irtaantui katolisesta kirkosta noin tuhat vuotta sitten. 1500-luvulla syntyivät protestanttiset kirkot."),
+   M("Mitä suitsuttaminen tarkoittaa ortodoksisessa jumalanpalveluksessa?","Puun pihkan tai muun aineen polttamista astiassa siten, että siitä nousee savua","Kynttilän sytyttämistä ikkunalle","Viinin juomista","Sormuksen vaihtamista","Suitsuttaminen tapahtuu polttamalla astiassa puun pihkaa tai muuta ainetta siten, että siitä nousee savua."),
+   M("Missä ortodoksinen kirkko vaikuttaa nykyään varsinkin?","Itä-Euroopassa, Venäjällä ja Kreikassa","Etelä-Amerikassa","Intiassa ja Kiinassa","Australiassa","Ortodoksinen kirkko vaikuttaa varsinkin Itä-Euroopassa, Venäjällä ja Kreikassa. Ortodokseja on noin 260 miljoonaa.")
+  ]),
+  P("Protestanttiset kirkot",[
+   M("Milloin protestanttiset kirkot saivat alkunsa?","1500-luvulla","Noin 2 000 vuotta sitten","Noin tuhat vuotta sitten","1900-luvulla","Protestanttiset kirkot saivat alkunsa 1500-luvulla, kun katolisen kirkon piirissä syntyi uudistusliikkeitä."),
+   M("Mikä yhdistää erilaisia protestanttisia suuntauksia?","Raamatun merkityksen korostaminen ja käsitys, että jokainen voi olla suorassa yhteydessä Jumalaan","Paavin johtajuus","Ikonien palvonta","Pyhiinvaellus Roomaan","Protestantteja yhdistää Raamatun merkityksen korostaminen ja käsitys, jonka mukaan jokainen voi olla suorassa yhteydessä Jumalaan."),
+   T("Suurin osa suomalaisista kuuluu luterilaiseen kirkkoon.",true,"Oikein. Siksi protestanttisuudella on Suomessa erityinen merkitys."),
+   M("Mikä seuraavista on protestanttinen kirkko?","Anglikaaninen kirkko","Katolinen kirkko","Ortodoksinen kirkko","Sunnalainen kirkko","Nykyään protestanttisia kirkkoja ovat muun muassa luterilainen, reformoitu ja anglikaaninen kirkko.")
+  ]),
+  P("Kristinusko Suomessa ja maailmalla",[
+   M("Miksi Mikael Agricola loi suomen kirjakielen 1500-luvulla?","Kääntääkseen Raamatun suomeksi","Kirjoittaakseen Koraanin suomeksi","Perustaakseen Vapaa-ajattelijain Liiton","Kirjoittaakseen päiväkirjan","Kristinuskolla on ollut osansa suomen kirjakielen synnyssä, koska Mikael Agricola loi 1500-luvulla suomen kirjakielen kääntääkseen Raamatun suomeksi."),
+   M("Milloin kristinusko tuli Suomeen?","Noin tuhat vuotta sitten","Noin 100 vuotta sitten","Noin 3 000 vuotta sitten","Vuonna 1948","Suomeen kristinusko tuli noin tuhat vuotta sitten."),
+   M("Missä kristinuskon asema on erityisen vahva Euroopan ulkopuolella?","Latinalaisessa Amerikassa","Saudi-Arabiassa","Japanissa","Pohjois-Afrikan autiomaassa","Kristinusko on hyvin elinvoimainen Euroopan ulkopuolella. Sen asema on erityisen vahva Latinalaisessa Amerikassa, ja kristittyjen määrä kasvaa vauhdilla myös Afrikassa ja Aasiassa."),
+   M("Miksi kristityt ovat aina tehneet lähetystyötä?","Koska Jeesus pyysi Raamatun mukaan seuraajiaan levittämään hänen opetuksiaan ympäri maailmaa","Koska paavi on määrännyt sen","Koska lähetystyö on kristityn viisi pilaria","Koska kristinusko on etninen uskonto","Kristityt ovat aina tehneet lähetystyötä, koska Jeesus pyysi Raamatun mukaan seuraajiaan levittämään hänen opetuksiaan ympäri maailmaa."),
+   T("Yhdysvalloissa kirkot ovat suosittuja, ja monet käyvät edelleen ahkerasti jumalanpalveluksissa.",true,"Oikein. Euroopassa monet kristityt ovat sen sijaan hiljalleen maallistuneet.")
+  ]),
+  P("Neitsyt Maria",[
+   M("Kuka Uuden testamentin kertomuksen mukaan ilmestyi Marialle ja ilmoitti, että tämä synnyttää pojan?","Enkeli Gabriel","Enkeli Mikael","Mooses","Messias","Uuden testamentin kertomuksen mukaan enkeli Gabriel ilmestyi Marialle ja ilmoitti, että tämä tulisi pian synnyttämään pojan."),
+   M("Millä nimillä Mariaa kutsutaan?","Neitsyt Mariaksi tai Jumalansynnyttäjäksi","Ristin kantajaksi","Messiaaksi","Pyhäksi Hengeksi","Mariaa kutsutaan Neitsyt Mariaksi tai Jumalansynnyttäjäksi, ja katolilaiset käyttävät hänestä myös nimeä Madonna."),
+   M("Missä Ranskan kaupungissa vierailee vuosittain yli miljoona pyhiinvaeltajaa Marian ilmestymisen vuoksi?","Lourdesissa","Mekassa","Jerusalemissa","Turussa","Lourdesin kaupungissa Ranskassa vierailee vuosittain yli miljoona pyhiinvaeltajaa, ja ihmiset kertovat siellä tapahtuneista ihmeparantumisista."),
+   M("Minkä Marian juhlapäivän protestantit hyväksyvät?","Marian ilmestyspäivän eli marianpäivän","Marian taivaaseenottamisen","Marian ihmeparantumisen päivän","Pääsiäisen","Protestantit hyväksyvät Marian juhlapäivistä vain marianpäivän, jota vietetään Suomessa vuosittain maaliskuussa."),
+   T("Mariasta kerrotaan Raamatun lisäksi myös muslimien pyhässä kirjassa Koraanissa.",true,"Oikein. Maria esiintyy sekä kristittyjen että muslimien pyhissä kertomuksissa."),
+   T("Neitsyt Maria on tärkeä kunnioituksen kohde katolisessa ja ortodoksisessa kirkossa.",true,"Oikein. Marialle on nimetty monia juhlapäiviä, ja ortodoksien ikoneissa kuvataan usein Mariaa, joka pitelee lasta sylissään.")
+  ]),
+  P("Ekumenia",[
+   M("Mitä ekumenia tarkoittaa?","Eri kirkkokuntien välistä yhteistyötä, jonka tavoitteena on saada kristityt kiinnittämään huomiota heitä yhdistäviin asioihin","Kristinuskon levittämistä ympäri maailmaa","Raamatun kääntämistä eri kielille","Kristittyjen kirkkovuoden juhlapäiviä","Ekumeniaksi kutsutaan eri kirkkokuntien välistä yhteistyötä. Sen tavoitteena on saada kristityt kiinnittämään huomiota heitä yhdistäviin asioihin."),
+   T("Monet kristityt osallistuvat myös eri uskontojen väliseen vuoropuheluun.",true,"Oikein. He tekevät yhteistyötä eri uskontojen kannattajien kanssa ja auttavat köyhiä, edistävät ihmisoikeuksia ja osallistuvat ympäristötoimintaan.")
+  ])
+ ]
+},
+{
+ id:"k3", num:"Kappale 3", title:"Juutalaisuus", short:"Juutalaisuus", color:"#4b3f9e", icon:"star",
+ tips:["Juutalaisuus on noin 3 000 vuotta vanha etninen uskonto. Juutalainen on se, jonka äiti on juutalainen.", "Toora eli viisi Mooseksen kirjaa on juutalaisten tärkein pyhä kirja.", "Juutalaiset uskovat yhteen Jumalaan, joka on solminut liiton Israelin kansan kanssa.", "Sapatti alkaa perjantai-iltana. Useimmat juhlat (pääsiäinen, viikkojuhla, lehtimajajuhla, hanukka) liittyvät juutalaisen kansan historiaan.", "Juutalainen laki ohjaa elämää, esim. kosher-ruokasäännöt. Historiaa leimaa vaino, ja holokaustissa kuoli noin kuusi miljoonaa juutalaista."],
+ topics:[
+  P("Nimenanto",[
+   M("Minkä pyhän kirjan lukemiseen perhe kokoontuu, kun juutalaiselle tyttövauvalle annetaan nimi?","Tooran","Koraanin","Raamatun Uuden testamentin","Ilmestyskirjan","Perhe kokoontuu lukemaan Tooraa, joka on juutalaisten pyhä kirja, ja osana lukuhetkeä lausutaan rukous, jossa lapsen nimeksi annetaan Ruut."),
+   M("Mihin nimi yhdistää lapsen?","Menneisiin sukupolviin","Kristittyjen seurakuntaan","Moskeijan rukousyhteisöön","Hanukan juhlaan","Vanhemmat ovat miettineet nimeä huolellisesti, sillä nimi yhdistää lapsen menneisiin sukupolviin."),
+   T("Ruut-niminen henkilö esiintyy juutalaisten pyhissä kirjoituksissa.",true,"Oikein. Kertomusten mukaan Ruut syntyi köyhyyteen mutta saavutti lopulta yltäkylläisen elämän.")
+  ]),
+  P("Juutalaisuuden synty ja levinneisyys",[
+   M("Kuinka vanha uskonto juutalaisuus on?","Noin 3 000 vuotta","Noin 1 500 vuotta","Noin 500 vuotta","Noin 100 vuotta","Juutalaisuus on noin 3 000 vuotta vanha uskonto, joka syntyi Lähi-idässä."),
+   M("Kuinka paljon juutalaisia on maailmassa noin?","Noin 15 miljoonaa","Noin 1,5 miljardia","Noin 2 miljardia","Noin 1 300","Nykyään juutalaisia on maailmassa noin 15 miljoonaa."),
+   T("Juutalaisuus on etninen uskonto, joten sillä tarkoitetaan sekä uskontoa että juutalaiseen kansaan kuulumista.",true,"Oikein. Juutalaiset pitävät itseään Israelin kansana, jonka kanssa Jumala on solminut erityisen liiton."),
+   M("Missä juutalaisia on erityisesti?","Israelissa, Yhdysvalloissa ja eri puolilla Eurooppaa","Vain Japanissa","Vain Intiassa","Vain Brasiliassa","Juutalaisia on erityisesti Israelissa, Yhdysvalloissa ja eri puolilla Eurooppaa.")
+  ]),
+  P("Kuka on juutalainen, ympärileikkaus",[
+   M("Ketä pidetään juutalaisena?","Jokaista, jonka äiti on juutalainen","Jokaista, jonka isä on juutalainen","Jokaista, joka asuu Israelissa","Jokaista, joka on käynyt synagogassa","Juutalaisena pidetään jokaista, jonka äiti on juutalainen."),
+   M("Monentenako päivänä syntymästä perheen pojalle suoritetaan ympärileikkaus?","Kahdeksantena","Ensimmäisenä","Kolmantena","Kolmantenatoista","Pojalle suoritetaan ympärileikkaus kahdeksantena päivänä hänen syntymästään."),
+   M("Minkä merkkinä juutalaiset pitävät poikien ympärileikkausta?","Siitä, että Jumala on solminut liiton Israelin kansan kanssa","Siitä, että poika on uskonnollisesti täysi-ikäinen","Siitä, että poika on vihitty rabbiksi","Siitä, että poika on kristitty","Juutalaiset pitävät poikien ympärileikkausta merkkinä siitä, että Jumala on solminut liiton Israelin kansan kanssa.")
+  ]),
+  P("Bar mitsva ja bat mitsva",[
+   M("Minkä ikäisenä juutalaisista pojista tulee uskonnollisesti täysi-ikäisiä?","13-vuotiaana","10-vuotiaana","12-vuotiaana","18-vuotiaana","Kun juutalainen poika täyttää 13 vuotta, hänen katsotaan olevan uskonnollisesti täysi-ikäinen. Tämän kunniaksi järjestetään bar mitsva -seremonia."),
+   M("Minkä ikäisenä tytöistä tulee uskonnollisesti täysi-ikäisiä, ja heille järjestetään bat mitsva -seremonia?","12-vuotiaina","10-vuotiaina","13-vuotiaina","18-vuotiaina","Tytöistä tulee uskonnollisesti täysi-ikäisiä 12-vuotiaina."),
+   T("Bar mitsva- tai bat mitsva -juhlassa nuoren on yleensä osattava lukea hepreankielistä Tooraa.",true,"Oikein. Tekstiä seurataan usein lukutikulla, koska pyhään tekstiin ei saa koskea sormin."),
+   T("Sekä pojat että tytöt saavat bar mitsva- tai bat mitsva -juhlissa lahjoja.",true,"Oikein. Lahjat voivat olla esimerkiksi kirjoja tai rahaa.")
+  ]),
+  P("Juutalaiset häät",[
+   M("Mitä muistetaan sillä, että sulhanen polkaisee juutalaisissa häissä rikki viinilasin?","Muinaisen Jerusalemin temppelin tuhoutumista","Israelin kansan vapautumista Egyptin orjuudesta","Jumalan luomistyön päättymistä","Liittoa, jonka Jumala solmi Siinainvuorella","Lasin rikkomisella muistetaan muinaisen Jerusalemin temppelin tuhoutumista."),
+   M("Mikä on synagoga?","Juutalainen rukoushuone","Juutalainen pyhä kirja","Juutalainen juhla","Juutalainen oppinut","Synagoga on juutalainen rukoushuone. Häät voidaan viettää kodissa, ulkona tai synagogassa."),
+   M("Mihin suuntaan juutalaisten hääpari seisoo vihkiseremonian aikana katoksessa?","Kohti Jerusalemia","Kohti Mekkaa","Kohti Roomaa","Kohti Egyptiä","Hääpari seisoo katoksessa, joka on suunnattu kohti juutalaisten pyhää kaupunkia Jerusalemia."),
+   M("Kuka suorittaa juutalaisen vihkimisen?","Rabbi eli juutalainen oppinut","Imaami","Paavi","Ortodoksinen pappi","Juutalainen oppinut eli rabbi suorittaa vihkimisen.")
+  ]),
+  P("Juutalaiset hautajaiset",[
+   M("Kuinka nopeasti juutalaiset hautajaiset tulisi suorittaa kuolemasta?","Vuorokauden kuluessa","Viikon kuluessa","Kuukauden kuluessa","Vuoden kuluessa","Juutalaiset hautajaiset ovat hyvin yksinkertaiset, ja ne tulisi suorittaa vuorokauden kuluessa kuolemasta."),
+   M("Millainen arkku juutalaisissa hautajaisissa on?","Puulaatikko, johon vainaja laitetaan pellavaliinoihin tai rukousviittaan käärittynä","Koristeellinen kultainen arkku","Ei lainkaan arkkua, vaan vainaja haudataan pelkkään kankaaseen","Kivinen arkku","Arkkuna on puulaatikko, johon vainaja laitetaan pellavaliinoihin tai rukousviittaan käärittynä."),
+   T("Juutalaisissa hautajaisissa arkulle heitetään kolme kertaa hiekkaa.",true,"Oikein. Hautajaisissa rabbi pitää puheen ja läsnäolijat lukevat yhdessä pyhiä kirjoituksia.")
+  ]),
+  P("Sapatti",[
+   M("Milloin juutalaisen perinteen mukaan sapatin vietto alkaa?","Perjantai-iltana auringon laskiessa","Torstai-iltana","Lauantaiaamuna","Sunnuntaina","Sapatin vietto alkaa perjantai-iltana auringon laskiessa. Sapatti on viikon seitsemäs päivä, joka on juutalaisen laskutavan mukaan lauantai."),
+   M("Minkä muistoksi sapattia vietetään?","Sen, että Jumala lepäsi seitsemäntenä päivänä luotuaan maailman kuudessa päivässä","Egyptin orjuudesta vapautumisen","Temppelin tuhoutumisen","Mooseksen syntymän","Sapattia vietetään sen muistoksi, että Tooran kertomuksen mukaan Jumala lepäsi seitsemäntenä päivänä luotuaan maailman kuudessa päivässä."),
+   M("Kuka sytyttää sapattikynttilät ja lausuu siunauksen perjantai-iltana?","Perheen äiti","Rabbi","Perheen isoisä","Pappi","Perheen äiti sytyttää sapattikynttilät ja lausuu siunauksen."),
+   T("Lauantaina juutalaiset kokoontuvat aamupäivällä synagogassa vietettävään jumalanpalvelukseen, jossa luetaan Tooraa ja rabbi pitää saarnan.",true,"Oikein. Kotona syödään sen jälkeen juhla-ateria, jonka jälkeen lauletaan sapattilauluja.")
+  ]),
+  P("Pääsiäinen ja viikkojuhla",[
+   M("Mitä juutalaiset muistavat pääsiäisenä?","Israelin kansan vapautumista Egyptin orjuudesta","Sitä, että Jumala antoi Moosekselle käskyt Siinainvuorella","Erämaassa lehtimajoissa asumista","Jerusalemin temppelin vaiheita","Pääsiäisenä muistetaan Israelin kansan vapautumista Egyptin orjuudesta."),
+   M("Kuka johti Israelin kansan pakenemaan Egyptistä?","Mooses","Abraham","Salomon","Ruut","Israelin kansan johtajaksi nousi Mooses, jonka johdolla kansa pakeni Egyptistä ja vaelsi erämaan halki Kanaaninmaahan."),
+   M("Ketä pidetään juutalaisuuden historian ensimmäisenä merkittävänä hahmona?","Abrahamia","Salomonia","Anne Frankia","Ruutia","Juutalaisuuden historian ensimmäisenä merkittävänä hahmona pidetään Abrahamia, jonka jälkeläisistä muodostui Israelin kansa."),
+   M("Mitä viikkojuhlana muistellaan?","Sitä, että Jumala solmi Siinainvuorella liiton Israelin kansan kanssa ja antoi Moosekselle käskyt","Egyptin orjuudesta vapautumista","Lehtimajoissa asumista","Temppelin ihmettä","Viikkojuhlaa vietetään seitsemän viikon kuluttua pääsiäisestä sen muistoksi, että Jumala solmi Siinainvuorella liiton Israelin kansan kanssa ja antoi Moosekselle käskyt."),
+   T("Viikkojuhlaa vietetään perinteisesti valvomalla yön yli synagogassa ja lukemalla pyhiä tekstejä.",true,"Oikein. Aamunkoitteessa juhlan viettäjiä väsyttää.")
+  ]),
+  P("Lehtimajajuhla ja hanukka",[
+   M("Mitä juutalaiset muistavat lehtimajajuhlassa?","Israelin kansan vaellusta erämaan halki ja asumista lehtimajoissa","Egyptin orjuudesta vapautumista","Temppelin öljyihmettä","Liittoa Siinainvuorella","Lehtimajajuhlassa kerrotaan, kuinka Israelin kansa vaelsi erämaan halki ja asui lehtimajoissa neljäkymmentä vuotta ennen Kanaaninmaahan saapumista."),
+   M("Mikä ihme tapahtui hanukan muiston mukaan, kun takaisin valloitettu temppeli siunattiin uudelleen?","Pieni määrä öljyä riitti pitämään öljylampussa valoa kahdeksan päivän ajan","Vesi muuttui viiniksi","Temppeli rakentui yhdessä yössä","Mooses jakoi meren kahtia","Hanukan aikana muistellaan ihmettä, jossa pieni määrä öljyä riitti pitämään lampussa valoa kahdeksan päivän ajan."),
+   T("Hanukka kestää kahdeksan päivää, ja juhlijat sytyttävät joka päivä uuden kynttilän hanukka-kynttelikköön.",true,"Oikein. Kynttelikköä pidetään usein ikkunalla."),
+   M("Minkä kuninkaan johdolla muinainen Jerusalemin temppeli rakennettiin?","Salomonin","Faraon","Abrahamin","Muhammadin","Temppeli rakennettiin kuningas Salomonin johdolla, kun Israelin kansa oli asettunut Kanaaninmaahan."),
+   M("Mitkä kaksi juhlaa vietetään kirjan kaavion mukaan keväisin?","Pääsiäinen ja viikkojuhla","Lehtimajajuhla ja hanukka","Hanukka ja pääsiäinen","Viikkojuhla ja lehtimajajuhla","Keväisin vietetään pääsiäistä ja viikkojuhlaa, ja syyskauden juhlia ovat lehtimajajuhla ja hanukka."),
+   T("Hanukkana syödään munkkeja ja lapsille annetaan pieniä lahjoja.",true,"Oikein. Perinneleikkiin kuuluu myös nelisivuisen hyrrän pyöritys.")
+  ]),
+  P("Usko yhteen Jumalaan",[
+   T("Juutalaisuus on monoteistinen uskonto, jossa uskotaan yhteen Jumalaan.",true,"Oikein. Juutalaisten mukaan Jumala loi maailman ja teki juutalaisista valitun kansansa."),
+   M("Miksi Jumalasta puhuttaessa käytetään usein kiertoilmauksia, kuten Herra tai Nimi?","Koska Jumalan nimeä ei lausuta tai kirjoiteta turhaan","Koska Jumalalla ei ole nimeä","Koska nimeä ei tunneta lainkaan","Koska nimi on Golem","Jumalan nimeä ei lausuta tai kirjoiteta turhia, ja siksi käytetään erilaisia kiertoilmauksia, kuten Herra tai Nimi."),
+   M("Mikä on mezuzah?","Juutalaisten kotien ovenpielessä oleva kotelo, joka sisältää Mooseksen sanat","Juutalainen vihkisormus","Pyhä lepopäivä","Erityinen leipä","Mezuzah on ovenpielessä oleva kotelo. Se on ikään kuin pieni uskontunnustus, sillä se sisältää sanat, jotka Mooses lausui erämaavaelluksen aikana."),
+   M("Millä tavalla Mooses kehotti juutalaisia rakastamaan Jumalaa?","Koko sydämellään, koko sielullaan ja kaikilla voimillaan","Vain sapattina","Vain synagogassa","Vain pääsiäisenä","Mooses kehotti juutalaisia rakastamaan Jumalaa koko sydämellään, koko sielullaan ja kaikilla voimillaan.")
+  ]),
+  P("Golem",[
+   M("Mikä golem on juutalaisessa perinteessä?","Maasta tai savesta muovattu olento, joka on herätetty henkiin","Juutalainen juhla","Juutalainen pyhä kirja","Rabbin viitta","Golem on juutalaisessa perinteessä esiintyvä maasta tai savesta muovattu olento."),
+   M("Miten golem herätetään henkiin?","Kirjoittamalla sen otsaan hepreankielinen totuutta tarkoittava sana","Lausumalla Isä meidän","Sytyttämällä hanukkakynttilä","Rikkomalla viinilasi","Golem on herätetty henkiin kirjoittamalla sen otsaan hepreankielinen totuutta tarkoittava sana."),
+   T("Golemin saa hengettömäksi pyyhkimällä sen otsasta sanan ensimmäisen kirjaimen.",true,"Oikein. Golem on hidas, epämuodostunut ja tyhmä olento, joka voi kuitenkin tuottaa paljon tuhoa.")
+  ]),
+  P("Juutalaisten pyhät kirjat",[
+   M("Mistä juutalaisten tärkein pyhä kirja Toora koostuu?","Viidestä Mooseksen kirjasta","Neljästä evankeliumista","Profeettojen kirjoista","99 nimestä","Toora koostuu viidestä Mooseksen kirjasta. Ne sisältävät kertomuksia maailman synnystä ja siitä, kuinka juutalaisista tuli Jumalan valittu kansa."),
+   M("Mihin kolmeen osaan juutalaisten pyhät kirjat jakautuvat?","Tooraan, profeettojen kirjoihin ja kirjoituksiin","Vanhaan ja Uuteen testamenttiin ja evankeliumeihin","Suuriin ja hadithiin","Mooseksen kirjoihin ja Ilmestyskirjaan","Juutalaisten pyhät kirjat jakautuvat Tooraan, profeettojen kirjoihin ja kirjoituksiin."),
+   T("Juutalaisten pyhät kirjat löytyvät kristittyjen Raamatun Vanhasta testamentista.",true,"Oikein. Siksi ne ovat useimmille kristityille tuttuja."),
+   T("Tooraa luetaan jumalanpalveluksessa läpi yhden vuoden aikana.",true,"Oikein. Tooran lukeminen on keskeinen osa juutalaisten jumalanpalvelusta."),
+   M("Missä Toora-kääröjä säilytetään?","Toorakaapissa","Kynttelikössä","Mezuzah-kotelossa","Lehtimajassa","Teksti on perinteisesti kirjoitettu hepreankielisille kirjakääröille, joita säilytetään erillisessä toorakaapissa.")
+  ]),
+  P("Juutalainen laki ja ruokasäännöt",[
+   M("Mihin juutalainen laki perustuu?","Käskyihin, jotka Jumala antoi Israelin kansalle Siinainvuorella","Paavin päätöksiin","Koraanin suuriin","Kalifien ratkaisuihin","Juutalainen laki perustuu käskyihin, jotka Jumala antoi Israelin kansalle Siinainvuorella."),
+   M("Mitä kosher tarkoittaa?","Juutalaisille sopivaa ruokaa","Islamin sääntöjen mukaan teurastettua lihaa","Ortodoksista ruokaa paaston aikana","Juutalaista rukousta","Juutalaisille sopivaa ruokaa kutsutaan kosheriksi."),
+   T("Juutalaisen lain mukaan liha- ja maitoruokia ei saa nauttia samalla aterialla.",true,"Oikein. Lisäksi eläimen verta ei saa nauttia."),
+   T("Kosher-sääntöjen mukaan sian ja jäniksen liha kelpaa syötäväksi.",false,"Väärin. Lehmän ja lampaan lihaa voidaan syödä, mutta sika ja jänis eivät sääntöjen mukaan kelpaa."),
+   M("Miksi juutalaiset eivät saa nauttia eläimen verta?","Koska eläimen sielun uskotaan olevan sen veressä","Koska veri on kuuma","Koska veri on aina saastaista","Koska se kuuluu kulutettavaksi vain sapattina","Kielto johtuu siitä, että eläimen sielun uskotaan olevan sen veressä."),
+   M("Mitä ortodoksijuutalaisuus pitää tärkeänä?","Sitä, että perinteitä vaalitaan tiukasti ja Tooran määräyksiä noudatetaan tarkasti","Sitä, että Tooraa ei pidetä Jumalan ehdottomana lakina","Sitä, että kaikki lait hylätään","Sitä, että Raamatun merkitystä korostetaan","Ortodoksijuutalaisuus pitää tärkeänä perinteiden tiukkaa vaalimista. Reformijuutalaisuus ei pidä Tooraa Jumalan ehdottomana lakina."),
+   M("Mikä on Länsimuuri?","Muinaisen Jerusalemin temppelin jäljellä oleva osa, jota kutsutaan toisinaan Itkumuuriksi","Mekan pyhäkkö","Vatikaanin muuri","Synagogan alttari","Muinaisesta Jerusalemin temppelistä on jäljellä vain Länsimuuri, jota kutsutaan toisinaan myös Itkumuuriksi.")
+  ]),
+  P("Juutalaisten historia ja holokausti",[
+   M("Mitä antisemitismi tarkoittaa?","Juutalaisten vastustamista","Uskonnon merkityksen vähenemistä","Uskoa moniin jumaliin","Kristittyjen yhteistyötä","Juutalaisten vastustamista alettiin 1800-luvulla kutsua antisemitismiksi."),
+   M("Mikä oli sionismin tavoite?","Perustaa oma valtio, jossa juutalaiset saisivat elää rauhassa","Muuttaa kaikki juutalaiset Eurooppaan","Hävittää juutalaisuus","Luoda uusi uskonto","Sionismi oli juutalaisten parissa syntynyt poliittinen liike, jonka tavoitteena oli perustaa oma valtio, jossa juutalaiset saisivat elää rauhassa."),
+   M("Noin kuinka monta juutalaista kuoli holokaustin eli joukkotuhon aikana?","Noin kuusi miljoonaa","Noin 1 300","Noin kaksi miljoonaa","Noin 15 miljoonaa","Holokaustin aikana kuoli kaikkiaan noin kuusi miljoonaa juutalaista."),
+   M("Minä vuonna Israelin valtio perustettiin?","Vuonna 1948","Vuonna 1500","Vuonna 622","Vuonna 2013","Vuonna 1948 YK:n luovuttamalle alueelle Palestiinassa perustettiin Israelin valtio."),
+   T("Suomessa asuu noin 1 300 juutalaista.",true,"Oikein. Euroopassa juutalaisia on jäljellä noin kaksi miljoonaa."),
+   M("Mikä juutalainen poliittinen liike syntyi vastauksena Euroopan lisääntyneeseen juutalaisvastaisuuteen?","Sionismi","Ekumenia","Maallistuminen","Šiialaisuus","Vastauksena juutalaisvastaisuuteen syntyi sionismiksi kutsuttu poliittinen liike."),
+   T("Holokaustin jälkeen YK laati ihmisoikeuksien yleismaailmallisen julistuksen, jonka tavoitteena oli suojella kaikkia ihmisiä vainolta ja syrjinnältä.",true,"Oikein. Julistus on tärkeä ihmisoikeuksien perusta.")
+  ]),
+  P("Anne Frank",[
+   M("Minne Anne Frankin perhe muutti pakoon juutalaisiin kohdistuneita vainoja?","Alankomaihin","Sveitsiin","Israeliin","Yhdysvaltoihin","Anne Frank syntyi juutalaiseen perheeseen Saksassa ja muutti perheineen myöhemmin Alankomaihin."),
+   M("Mitä Anne Frank teki piilopaikassa?","Teki koulutehtäviä ja kirjoitti päiväkirjaa","Johti rukoushetkiä","Rakensi lehtimajan","Käänsi Raamattua","Piilopaikassa Anne käytti aikaansa tekemällä koulutehtäviä ja kirjoittamalla päiväkirjaa."),
+   T("Anne Frankin päiväkirja julkaistiin vasta hänen kuolemansa jälkeen.",true,"Oikein. Sen pohjalta on tehty lukuisia elokuvia ja musiikkiesityksiä."),
+   M("Kuinka monelle kielelle Anne Frankin päiväkirja on käännetty?","55 kielelle","3 kielelle","114 kielelle","Vain hepreaksi","Anne Frankin päiväkirja on käännetty 55 eri kielelle, ja sitä on painettu yhteensä 25 miljoonaa kappaletta."),
+   M("Mitä Anne Frank -säätiö pyrkii edistämään?","Uskontojen välistä yhteisymmärrystä","Rukoushetkien määrää","Koraanin kääntämistä","Ydinasekokeita","Anne Frank -säätiö harjoittaa hyväntekeväisyyttä ja pyrkii edistämään uskontojen välistä yhteisymmärrystä."),
+   T("Anne ja hänen siskonsa kuolivat keskitysleirillä saamaansa tautiin vain muutamaa viikkoa ennen holokaustin loppua.",true,"Oikein. Perheen piilopaikka oli paljastunut, ja perheenjäsenet vietiin eri keskitysleireille.")
+  ])
+ ]
+},
+{
+ id:"k4", num:"Kappale 4", title:"Islam", short:"Islam", color:"#6d3a8f", icon:"crescent",
+ tips:["Islamin viisi uskonnollista velvollisuutta ovat rukous, uskontunnustus, paasto, almujen antaminen ja pyhiinvaellus.", "Muslimit uskovat yhteen Jumalaan (Allah) ja Muhammadiin hänen lähettiläänään. Islamin pyhä kirja Koraani on muslimien mukaan enkeli Gabrielin sanelema.", "Ramadan on paastokuukausi, ja se päättyy id al-fitr -juhlaan. Pyhiinvaellus Mekkaan huipentuu id al-adha -uhrijuhlaan.", "Islamilainen laki eli šaria ohjaa elämää. Islamin pääsuuntaukset ovat sunnalaisuus (suurin) ja šiialaisuus.", "Muhammad syntyi Mekassa vuonna 570, siirtyi Medinaan vuonna 622 ja kuoli vuonna 632."],
+ topics:[
+  P("Nimenanto",[
+   M("Mitä isä kuiskaa arabian kielellä vastasyntyneen pojan oikeaan korvaan nimenantojuhlassa?","Islamin uskontunnustuksen","Rukouskutsun","Pojan toisen nimen","Koraanin ensimmäisen suuran","Isä kuiskaa arabian kielellä lapsensa oikeaan korvaan islamin uskontunnustuksen."),
+   M("Minkä nimen vastasyntynyt poika saa kirjan nimenantojuhlassa perinteen mukaan?","Abdullah","Ruut","Mika","Muhammad Ali","Vastasyntynyt poika saa perinteen mukaisesti nimekseen Abdullah. Toiseksi nimekseen hän saa isänsä nimen ja kolmanneksi isoisänsä nimen."),
+   M("Mitä Abdullah saa lahjaksi kaulaansa?","Pienen medaljongin, jossa on Koraanin säkeitä","Sormuksen","Hopeisen hanukkakynttelikön","Pienen ristin","Lahjaksi Abdullah saa kaulaansa pienen medaljongin, jossa on Koraanin säkeitä."),
+   T("Nimenantojuhlassa Koraania resitoidaan eli toistetaan laulaen koko juhlan ajan.",true,"Oikein. Se osoittaa Koraanin merkityksen."),
+   M("Mistä vanhasta perinteestä tupsun leikkaaminen muistuttaa?","Siitä, että vauvan tukka ajeltiin ja perhe antoi tukan painon verran hopeaa köyhille","Siitä, että vauva kastettiin kolme kertaa","Siitä, että vauvalle annettiin kaksi nimeä","Siitä, että vauva vietiin synagogaan","Nimenannon jälkeen vauvan tukasta leikataan tupsu. Se muistuttaa perinteestä, jossa tukka ajeltiin ja perhe antoi tukan painon verran hopeaa köyhille.")
+  ]),
+  P("Islamin synty ja levinneisyys",[
+   M("Milloin islam syntyi?","Noin 1 500 vuotta sitten","Noin 3 000 vuotta sitten","Noin 2 000 vuotta sitten","Noin 100 vuotta sitten","Islam syntyi noin 1 500 vuotta sitten profeetta Muhammadin toiminnan tuloksena."),
+   M("Kuinka paljon islamilla on kannattajia maailmassa?","Noin 1,5 miljardia","Noin 15 miljoonaa","Noin 60 000","Noin 800 miljoonaa","Nykyään islamilla on noin 1,5 miljardia kannattajaa ympäri maailmaa."),
+   T("Islam on universaali uskonto, johon voi liittyä kuka tahansa sen oppeihin sitoutuva.",true,"Oikein. Muslimeiksi kutsutaan islaminuskoisia."),
+   M("Missä Muhammad toimi?","Arabian niemimaalla","Intiassa","Kiinassa","Euroopassa","Muhammad toimi Arabian niemimaalla ja julisti tuovansa ihmisille Jumalan sanan.")
+  ]),
+  P("Ympärileikkaus",[
+   M("Millä perusteella joissain muslimiperheissä pojalle teetetään ympärileikkaus?","Islamin perustaja profeetta Muhammad oli ympärileikattu","Koraani määrää sen kahdeksantena päivänä","Se on lääketieteellinen vaatimus","Se kuuluu kasteeseen","Siirtymäriitin suorittamista perustellaan sillä, että islamin perustaja profeetta Muhammad oli ympärileikattu."),
+   T("Ympärileikkauksen ikä vaihtelee paikallisten tapojen mukaan vastasyntyneistä teini-ikäisiin.",true,"Oikein. Ympärileikkaus ilmentää myös pojan sitoutumista islamiin ja kuulumista muslimien yhteisöön."),
+   T("Islamissa on yksi ainoa tapa olla muslimi, eikä siirtymäriitit vaihtele alueittain.",false,"Väärin. Siirtymäriitit vaihtelevat eri alueilla, eikä ole yhtä tapaa olla muslimi.")
+  ]),
+  P("Avioliitto ja hautajaiset",[
+   M("Missä muslimien avioliitto solmitaan tekemällä avioliittosopimus?","Islamilaisen tuomarin luona","Synagogassa","Paavin luona","Kirkossa papin edessä","Avioliitto solmitaan tekemällä avioliittosopimus islamilaisen tuomarin luona."),
+   M("Miksi avioituminen on muslimeille tärkeää?","Monissa maissa valtio ei huolehdi koulutuksesta tai terveydenhuollosta, vaan perhe ja suku huolehtivat omista jäsenistään","Koska avioliitto on yksi viidestä velvollisuudesta","Koska pyhiinvaellus vaatii avioliiton","Koska rukoilla saa vain naimisissa","Islamin oppien mukaan jokaisella täysi-ikäisellä on velvollisuus mennä naimisiin ja perustaa perhe. Perhe ja suku huolehtivat omista jäsenistään."),
+   M("Miten muslimin hautaus perinteen mukaan toimitetaan?","Vainaja pestään ja haudataan kankaaseen käärittynä ilman arkkua","Vainaja haudataan puiseen arkkuun, jolle valutetaan kolme kertaa hiekkaa","Vainaja haudataan viikon kuluttua rukousviittaan käärittynä","Vainaja haudataan vasta kuukauden kuluttua","Kun muslimi kuolee, vainaja pestään ja hautaus pyritään toimittamaan vuorokauden kuluessa. Perinteen mukaan vainaja haudataan kankaaseen käärittynä ilman arkkua."),
+   T("Muslimien hautajaisseremoniaan osallistuvat yleensä vain miehet.",true,"Oikein."),
+   T("Islam ei hyväksy avioeroa lainkaan.",false,"Väärin. Islam hyväksyy periaatteessa avioeron, mutta eroaminen on helpompaa miehelle kuin naiselle.")
+  ]),
+  P("Ammatinvalinta ja naisten asema",[
+   M("Mitä ammatteja muslimin tulisi välttää?","Ammatteja, joissa joutuisi tekemisiin sianlihan, alkoholin, koron perimisen tai uhkapelien kanssa","Kaikkia opettajan ammatteja","Kaikkia ammatteja, joissa tehdään työtä sunnuntaina","Kaikkia ammatteja moskeijan ulkopuolella","Muslimin tulisi välttää ammatteja, joissa hän joutuisi tekemisiin sianlihan, alkoholin, koron perimisen tai uhkapelien kanssa."),
+   M("Mikä on muslimien ihanne työstä?","Elättää itsensä rehellisellä työllä, eikä tavoitella suuria taloudellisia voittoja","Tehdä mahdollisimman suuria voittoja","Olla työtön","Työskennellä vain öisin","Muslimien ihanteena on elättää itsensä rehellisellä työllä, eikä sen avulla ole suotavaa tavoitella suurten taloudellisten voittojen tekemistä."),
+   T("Saudi-Arabiassa naiset eivät saaneet lain mukaan ajaa autoa ennen vuotta 2017.",true,"Oikein. Useimmissa muissa maissa musliminaiset ovat voineet jo pitkään toimia ammattiautoilijoina."),
+   M("Missä maassa naispuolisia imaameja toimii kirjan mukaan?","Malesiassa","Saudi-Arabiassa","Suomessa","Egyptissä","Malesiassa toimii naispuolisia imaameja. Irakissa naiset voivat liittyä armeijaan."),
+   T("Perinteisen käsityksen mukaan miehen tulee hoitaa kodin ulkopuoliset asiat ja naisen huolehtia kodista, mutta nykyään naiset etsivät myös töitä kodin ulkopuolelta.",true,"Oikein. Monet korkeakoulutetut naiset ovat kunnianhimoisia ja toimivat esimerkiksi johtajina.")
+  ]),
+  P("Islamin viisi uskonnollista velvollisuutta",[
+   M("Mikä seuraavista EI kuulu islamin viiteen uskonnolliseen velvollisuuteen?","Kaste","Paasto","Almujen antaminen","Pyhiinvaellus Mekkaan","Viisi velvollisuutta ovat päivittäiset rukoukset, uskontunnustus, paasto, almujen antaminen ja pyhiinvaellus Mekkaan. Kaste ei kuulu niihin."),
+   M("Missä maassa Mekka sijaitsee?","Saudi-Arabiassa","Egyptissä","Intiassa","Turkissa","Mekka on muslimien pyhä kaupunki, joka sijaitsee Saudi-Arabiassa."),
+   M("Kuinka usein almuvero maksetaan kirjan taulukon mukaan?","Vähintään kerran vuodessa","Joka päivä","Kerran elämässä","Joka perjantai","Taulukon mukaan almuvero maksetaan vähintään kerran vuodessa, ja se on osa ihmisen tuloista tai omaisuudesta."),
+   M("Montako kertaa muslimin elämänaikana pyhiinvaellus Mekkaan tulisi vähintään tehdä?","Ainakin kerran","Viisi kertaa","Joka vuosi","Seitsemän kertaa","Jokaisen terveen ja täysi-ikäisen muslimin tulisi ainakin kerran elämässään tehdä pyhiinvaellus Mekkaan."),
+   T("Viisi uskonnollista velvollisuutta ovat kuin viisi pilaria, joiden varaan muslimin uskonnollinen elämä rakentuu.",true,"Oikein. Niissä kiteytyy se, mihin ihmisen tulee uskoa ja miten hänen tulee toimia ollakseen hyvä muslimi.")
+  ]),
+  P("Rukous ja moskeija",[
+   M("Mihin suuntaan muslimi kumartuu rukoillessaan?","Kohti Mekkaa","Kohti Medinaa","Kohti Jerusalemia","Kohti aurinkoa","Muslimi asettaa rukousmaton sopivaan kohtaan, polvistuu matolle ja kumartuu kohti Mekkaa."),
+   M("Mikä on minareetti?","Korkea torni moskeijan vieressä","Muslimien pyhä kirja","Rukousmatto","Pyhiinvaelluksen valkoinen asu","Moskeijan voi erottaa jo kaukaa minareeteista, jotka ovat korkeita moskeijan vieressä olevia torneja."),
+   M("Mikä on viikon kohokohta muslimien rukouksessa?","Perjantain keskipäivän rukous, johon monet menevät moskeijaan imaamin johdolla","Sunnuntain jumalanpalvelus","Lauantain sapattirukous","Maanantain aamurukous","Perjantain keskipäivän rukous on viikon kohokohta, jolloin monet menevät rukoilemaan moskeijaan imaamin johdolla."),
+   M("Mitä muslimin tulee tehdä ennen rukoushetken aloittamista?","Puhdistautua: riisua kengät ja pestä jalat, kädet ja kasvot","Syödä juhla-ateria","Maksaa almuvero","Lausua Isä meidän","Muslimin tulee puhdistautua ennen rukoushetkeä. Ensin riisutaan kengät ja sen jälkeen pestään jalat, kädet ja kasvot."),
+   T("Moskeijassa vietettäviin rukoushetkiin kokoontuvat useimmiten vain miehet, ja naiset rukoilevat yleensä kotona.",true,"Oikein. Joissakin suurissa moskeijoissa on kuitenkin naisille omat tilansa."),
+   M("Mitä rukousajat noudattavat?","Auringon liikkeitä","Kuun vaiheita","Viikonpäiviä","Papin määräämiä aikoja","Rukousajat noudattavat auringon liikkeitä. Ensimmäiseen rukoushetkeen herätään ennen auringonnousua ja viimeinen rukous on illalla auringonlaskun jälkeen.")
+  ]),
+  P("Jumala ja uskontunnustus",[
+   T("Allah on arabiankielinen yleisnimitys Jumalalle, jota myös arabiankieliset kristityt käyttävät puhuessaan kristinuskon Jumalasta.",true,"Oikein. Muslimit korostavat uskoa yhteen Jumalaan, jota he kutsuvat nimellä Allah."),
+   M("Kuinka monta eri nimeä Jumalalle annetaan Koraanissa?","99","7","114","5","Koraanissa Jumalalle annetaan kaiken kaikkiaan 99 eri nimeä, jotka kuvailevat hänen eri ominaisuuksiaan."),
+   M("Mitä muslimi todistaa lausumalla uskontunnustuksen?","Uskovansa yhteen Jumalaan, jonka lähettiläs Muhammad on","Uskovansa kolmiyhteiseen Jumalaan","Uskovansa moniin jumaliin","Tulleensa pyhiinvaellukselle","Lausumalla uskontunnustuksen ihminen todistaa uskovansa yhteen Jumalaan, jonka lähettiläs Muhammad on."),
+   M("Milloin muslimit lausuvat uskontunnustuksen?","Rukoushetkien alussa ja lopussa sekä elämän tärkeissä taitekohdissa, kuten nimenannossa ja avioliitossa","Vain pyhiinvaelluksella","Vain ramadanin aikana","Vain hautajaisissa","Viisi päivittäistä rukoushetkeä alkavat ja päättyvät uskontunnustukseen. Se lausutaan myös nimenannossa, avioliiton solmimisessa ja muissa tärkeissä taitekohdissa."),
+   M("Mikä seuraavista kuvaa Jumalaa Koraanin mukaan?","Ikuinen, näkymätön, kaikkitietävä ja kaikkivaltias","Kolmiyhteinen","Moniin jumaliin jakautunut","Ihmiseksi tullut","Jumala on Koraanin nimien mukaan muun muassa ikuinen, näkymätön, kaikkitietävä, kaikkivaltias sekä maan ja taivaan luoja.")
+  ]),
+  P("Profeetat ja Muhammadin asema",[
+   T("Muslimien mukaan Muhammadin jälkeen ei voi tulla enää uusia profeettoja.",true,"Oikein. Muhammad on kaikkein tärkein profeetta."),
+   M("Ketkä seuraavista ovat muslimien mukaan profeettoja?","Abraham, Mooses ja Jeesus","Vain Muhammad","Vain Jeesus","Gabriel, Mikael ja Maria","Muslimien mukaan myös juutalaisuuden ja kristinuskon keskeiset henkilöt, kuten Abraham, Mooses ja Jeesus, olivat profeettoja."),
+   M("Millaisena henkilönä muslimit pitävät Muhammadia?","Esimerkillisenä ihmisenä, jonka elämässä kiteytyy islamin ihanteiden mukainen elämä","Jumalan poikana","Enkelinä","Paavina","Muslimit pitävät Muhammadia esimerkillisenä ihmisenä, jonka elämässä kiteytyy islamin ihanteiden mukainen elämä."),
+   M("Mikä on islamin asema Intiassa?","Islam on maan toiseksi suurin uskonto, ja siellä on 180 miljoonaa muslimia","Islam on maan suurin uskonto","Islamia ei ole Intiassa lainkaan","Islam on maan ainoa uskonto","Intiassa on 180 miljoonaa muslimia, ja islam on maan toiseksi suurin uskonto. Profeetta Muhammadin syntymäpäivä on iloinen kansanjuhla.")
+  ]),
+  P("Islaminuskoiset rapmuusikot",[
+   M("Millä tavalla moni islaminuskoinen rapmuusikko käsittelee uskoaan?","Pitää sanoituksissaan esillä islamiin liittyviä asioita","Ei koskaan puhu uskonnosta","Laulaa vain kirkkomusiikkia","Kieltäytyy esiintymästä","Islaminuskoiset rapmuusikot pitävät sanoituksissaan esillä islamiin liittyviä asioita, ja heille musiikki on luonteva tapa puhua Allahista."),
+   T("Rapmuusikko Mos Def on aloittanut albuminsa rukouksella ”Allahin, armeliaan armahtajan nimeen”.",true,"Oikein. Mos Defillä on ollut tapana aloittaa albuminsa rukouksella."),
+   M("Mikä seuraavista on kirjan mainitsema islaminuskoinen rapmuusikko?","Ice Cube","Anne Frank","Paavi Franciscus","Martin Luther King","Islaminuskoisia muusikoita ovat esimerkiksi yhdysvaltalaiset Ice Cube, Ghostface Killah, Mos Def ja Q-Tip.")
+  ]),
+  P("Ramadan ja almut",[
+   M("Mitä muslimit tekevät ramadanin aikana?","Paastoavat: eivät syö eivätkä juo auringonnousun ja -laskun välisenä aikana","Viettävät sapattia","Lukevat Tooraa","Valvovat yön synagogassa","Muslimit paastoavat kerran vuodessa ramadanin ajan. Silloin ei saa syödä tai juoda auringonnousun ja -laskun välisenä aikana."),
+   M("Minkä nimistä juhlaa vietetään ramadanin eli paastokuukauden päättyessä?","Id al-fitr","Id al-adha","Hanukka","Helluntai","Ramadan päättyy kolmipäiväiseen paastokuukauden päätösjuhlaan, jota kutsutaan nimityksellä id al-fitr."),
+   M("Ketkä on vapautettu paaston viettämisestä?","Pienet lapset, raskaana olevat naiset, sairaat, vanhukset ja matkalla olevat","Vain miehet","Vain imaamit","Kaikki yli 18-vuotiaat","Pienet lapset, raskaana olevat naiset, sairaat, vanhukset ja matkalla olevat ihmiset on vapautettu paaston viettämisestä."),
+   T("Almuveron maksamisen laiminlyönnistä annetaan rangaistus.",false,"Väärin. Almuveron maksaminen on jokaisen omalla vastuulla, eikä maksun laiminlyönnistä anneta rangaistusta."),
+   M("Mitä almuveron avulla voi tukea?","Yksittäisiä ihmisiä tai esimerkiksi moskeijan rakentamista","Vain pyhiinvaellusta","Vain kirkkoa","Vain hautajaisia","Almuverolla voi tukea yksittäisiä ihmisiä tai esimerkiksi moskeijan rakentamista."),
+   T("Ramadanin aikana Egyptissä sytytetään koristeeksi lyhtyjä.",true,"Oikein. Lyhdyt ovat suosittuja erityisesti Egyptissä."),
+   M("Mikä on ramadanin tarkoitus?","Ohjata ihmisiä keskittymään hengellisiin asioihin ja muistuttaa, että Jumala on antanut ihmiselle lahjaksi kaikki elämän hyvät asiat","Muistella Egyptin orjuutta","Valmistautua kasteeseen","Juhlia Muhammadin syntymää","Ramadanin tarkoitus on ohjata ihmisiä keskittymään hengellisiin asioihin ja muistuttaa, että Jumala on antanut ihmiselle lahjaksi kaikki elämän hyvät asiat.")
+  ]),
+  P("Pyhiinvaellus Mekkaan",[
+   M("Montako kertaa Kaaban pyhäkkö kierretään pyhiinvaelluksen aikana?","Seitsemän kertaa","Kolme kertaa","Viisi kertaa","Kaksitoista kertaa","Kaaban pyhäkkö kierretään vastapäivään seitsemän kertaa, sillä seitsemän on islamissa pyhä numero."),
+   M("Miksi pyhiinvaeltajat pukeutuvat yksinkertaisiin valkoisiin vaatteisiin?","Koska pyhiinvaelluksella ei ole suotavaa korostaa varallisuuttaan tai asemaansa, ja asu korostaa tasavertaisuutta","Koska valkoinen on hautajaisten väri","Koska sitä vaatii ramadan","Koska se suojaa auringolta","Pyhiinvaeltajat pukeutuvat yksinkertaisiin valkoisiin vaatteisiin, koska varallisuuden tai korkean aseman korostaminen ei ole suotavaa. Samanlainen pukeutuminen korostaa tasavertaisuutta."),
+   M("Minkä nimistä juhlaa vietetään pyhiinvaelluksen huipennuksena?","Id al-adha eli uhrijuhla","Id al-fitr","Hanukka","Helluntai","Pyhiinvaellus huipentuu uhrijuhlaan, joka tunnetaan nimellä id al-adha."),
+   M("Kenen muslimit uskovat rakentaneen Kaaban pyhäkön?","Abrahamin","Muhammadin","Salomonin","Mooseksen","Muslimit uskovat, että Kaaban pyhäkkö on Abrahamin rakentama."),
+   M("Mitä pyhiinvaelluspankit tekevät?","Myöntävät ihmisille korotonta lainaa pyhiinvaelluksen matkakuluja varten","Keräävät almuveroa","Opettavat Koraania","Rakentavat moskeijoita","Islamilaisissa maissa toimii pyhiinvaelluspankkeja, jotka myöntävät ihmisille korotonta lainaa matkakuluja varten."),
+   T("Kaaban pyhäkkö oli tärkeä pyhä paikka jo ennen islamin syntyä, mutta silloin siellä palvottiin useita eri jumalia.",true,"Oikein. Muhammad saarnasi, että on olemassa vain yksi jumala, ja omisti pyhäkön Allahille."),
+   T("Pyhiinvaellus kestää viisi päivää ja suoritetaan yleensä kaksi kuukautta ramadanin päättymisen jälkeen.",true,"Oikein. Pyhiinvaellukselle saapuu vuosittain miljoonia muslimeja."),
+   M("Mitä Kaaban pyhäkön kulmassa on?","Soikea musta kivi","Valkoinen marmoripatsas","Kultainen risti","Toorakaappi","Rakennuksen kulmassa on soikea musta kivi, joka oli perimätiedon mukaan alun perin valkoinen mutta muuttui mustaksi merkiksi siitä, että ihmiset tekivät syntejä.")
+  ]),
+  P("Koraani",[
+   M("Kuka muslimien uskomuksen mukaan saneli Koraanin Muhammadille?","Enkeli Gabriel","Enkeli Mikael","Mooses","Abraham","Muslimit uskovat, että enkeli Gabriel saneli Koraanin Muhammadille, joka kirjoitti lauseet ylös sanatarkasti."),
+   M("Kuinka monta suuraa eli lukua Koraani sisältää?","114","99","5","7","Koraani jakautuu 114 suuraan eli lukuun."),
+   T("Koraani on aito vain arabiankielisenä.",true,"Oikein. Muille kielille käännettyjä Koraaneja voidaan kuitenkin käyttää apuna tekstin ymmärtämiseksi."),
+   M("Mitä Koraanin resitointi tarkoittaa?","Koraanin lausuntaa laulaen","Koraanin kääntämistä","Koraanin kopioimista","Koraanin painamista","Koraanin lausunta laulaen eli resitointi on uskonnollista toimintaa, jonka ajatellaan hyödyttävän ihmistä."),
+   M("Missä lapset opettelevat Koraanin suuria?","Koraanikouluissa","Toorakaapissa","Synagogissa","Vatikaanissa","Monin paikoin toimii koraanikouluja, joissa lapset opettelevat Koraanin suuria."),
+   M("Mitä muslimit lukevat Koraanin ohella?","Kertomuksia, jotka sisältävät perimätietoa profeetta Muhammadin sanoista ja teoista","Uuden testamentin evankeliumeja","Tooraa","Ilmestyskirjaa","Koraanin ohella muslimit lukevat myös kertomuksia, jotka sisältävät perimätietoa profeetta Muhammadin sanoista ja teoista."),
+   T("Muslimioppineet ovat perinteisesti olleet miehiä, mutta nykyään myös naiset voivat toimia Koraanin selittäjinä.",true,"Oikein.")
+  ]),
+  P("Islamilainen laki eli šaria",[
+   M("Mitä šaria tarkoittaa?","Tietä, jota kulkemalla ihminen saavuttaa pelastuksen","Pyhiinvaellusta","Almuveroa","Rukousmattoa","Šaria tarkoittaa tietä, jota kulkemalla ihminen saavuttaa pelastuksen. Sen pääasiallinen tehtävä on ohjata muslimeja elämään Jumalan tahdon mukaisesti."),
+   M("Mikä on šarian tärkeimpiä lähteitä?","Koraani","Toora","Ilmestyskirja","Uusi testamentti","Koraani on yksi tärkeimmistä islamilaisen lain eli šarian lähteistä."),
+   M("Mitä halal-liha tarkoittaa?","Islamin sääntöjen mukaisesti teurastettua lihaa","Sianlihaa, joka on valmistettu erityisellä tavalla","Lihaa, jota saa syödä vain ramadanin aikana","Lihaa, joka on lahjoitettu köyhille","Syötäväksi tarkoitetun lihan tulee olla islamin sääntöjen mukaisesti teurastettua halal-lihaa. Halal tarkoittaa arabian kielellä puhdasta tai sallittua."),
+   T("Islamilainen laki kieltää sianlihan syömisen ja alkoholin nauttimisen.",true,"Oikein."),
+   T("Lain mukaan tyttäret perivät saman verran kuin pojat.",false,"Väärin. Tyttäret perivät lain mukaan puolet siitä, mitä pojat. Toimintatapaa perustellaan sillä, että miesten velvollisuus on perinteisesti ollut perheen elättäminen."),
+   M("Mitä islamilainen laki eli šaria sanoo mahdollisesta useammasta vaimosta?","Mies voi periaatteessa ottaa useamman vaimon, mutta hänen tulee kohdella kaikkia vaimojaan yhdenvertaisesti","Mies saa ottaa vain yhden vaimon","Mies saa ottaa vaimon vain kerran elämässä","Vaimoja saa olla vain neljä, eikä muuta määrätä","Lain mukaan mies voi periaatteessa ottaa useamman vaimon, mutta monet pitävät yhdenvertaisen kohtelun toteuttamista mahdottomana ja kieltävät siksi moniavioisuuden."),
+   M("Mitä Koraanin pukeutumisohjeesta kirja sanoo?","Koraanissa kehotetaan pukeutumaan siveästi, ja tekstikohtaa tulkitaan eri tavoin","Koraani kieltää pukeutumisen kokonaan","Kaikki musliminaiset käyttävät huivia, eikä tulkintaa ole","Koraani ei sano pukeutumisesta mitään","Koraanissa kehotetaan pukeutumaan siveästi. Jotkut musliminaiset eivät käytä lainkaan huiveja, ja toisten mielestä huivit ovat osa muodikasta ja kaunista pukeutumista."),
+   T("Muslimien enemmistö pitää ääriliikkeiden toimintaa šarian vastaisena.",true,"Oikein. Vain hyvin pienellä osalla muslimeja on yhteyksiä tällaisiin liikkeisiin.")
+  ]),
+  P("Islamin suuntaukset ja islam Suomessa",[
+   M("Mikä on islamin suurin pääsuuntaus?","Sunnalaisuus","Šiialaisuus","Protestanttisuus","Ortodoksijuutalaisuus","Muslimit ovat jakautuneet kahteen pääsuuntaukseen, joista sunnalaisuus on suurin. Toinen on šiialaisuus."),
+   M("Mitä šiialaisuus tarkoittaa niin sanotusti?","Alin puoluetta","Profeetan tietä","Kalifien joukkoa","Mekan kannattajia","Šiialaisuus tarkoittaa niin sanotusti Alin puoluetta. Ali oli Muhammadin serkku ja vävy."),
+   M("Missä maissa šiialaiset ovat enemmistönä?","Iranissa ja Irakissa","Suomessa ja Ruotsissa","Intiassa ja Kiinassa","Egyptissä ja Libyassa","Vaikka šiialaisia on maailmanlaajuisesti huomattavasti vähemmän kuin sunnalaisia, he ovat enemmistö Iranissa ja Irakissa."),
+   M("Mistä sunnalaisuus on saanut nimensä?","Siitä, että sen kannattajat noudattavat profeetan sunnaksi kutsuttua perimätietoa","Siitä, että sen kannattajat seuraavat Alia","Siitä, että se syntyi Suomessa","Siitä, että se on uusin pääsuuntaus","Nimitys tulee siitä, että sunnalaisuuden kannattajat noudattavat profeetan sunnaksi kutsuttua perimätietoa."),
+   M("Noin kuinka monta muslimia Suomessa arvioidaan nykyään asuvan?","Noin 60 000","Noin 1 300","Noin 1,5 miljoonaa","Noin 15 miljoonaa","Suomessa on asunut muslimeja jo yli sadan vuoden ajan, ja nykyään heitä arvioidaan olevan noin 60 000."),
+   T("Suomessa asuvista muslimeista enemmistö on sunneja.",true,"Oikein. Suurin osa Suomen moskeijoista on sunnalaisten johtamia."),
+   M("Minä vuonna Suomen Islamilainen Neuvosto perustettiin?","Vuonna 2007","Vuonna 622","Vuonna 1948","Vuonna 1500","Vuonna 2007 perustettiin Suomen Islamilainen Neuvosto, jonka tehtävänä on toimia muslimien yhteistyöelimenä ja jakaa tietoa islamista."),
+   T("Suomessa asuvat muslimit tulevat lukuisista eri maista ja puhuvat monia eri kieliä.",true,"Oikein. Muuhun Eurooppaan verrattuna Suomen muslimiväestö on pieni mutta kirjava.")
+  ]),
+  P("Profeetta Muhammad",[
+   M("Missä kaupungissa profeetta Muhammad perimätiedon mukaan syntyi?","Mekassa","Medinassa","Jerusalemissa","Roomassa","Perimätiedon mukaan Muhammad syntyi Mekan kaupungissa vuonna 570."),
+   M("Minne profeetta Muhammad siirtyi seuraajineen Mekasta vuonna 622?","Medinaan","Jerusalemiin","Roomaan","Bagdadiin","Vuonna 622 Muhammad seuraajineen siirtyi Mekasta Medinaan eli profeetan kaupunkiin."),
+   T("Islamin ajanlasku alkaa vuodesta, jolloin profeetta siirtyi Medinaan.",true,"Oikein."),
+   M("Minkä ikäisenä Muhammad jäi orvoksi?","Kuusivuotiaana","Kahdeksanpäiväisenä","Kolmetoistavuotiaana","Neljänkymmenen vuoden iässä","Muhammad jäi orvoksi kuusivuotiaana, ja hänen setänsä adoptoi hänet perheeseensä."),
+   M("Keneltä Muhammad sai ensimmäiset näkynsä noin neljänkymmenen vuoden iässä?","Enkeli Gabrielilta","Enkeli Mikaelilta","Moosekselta","Abrahamilta","Noin neljänkymmenen vuoden iässä Muhammad sai ensimmäiset näkynsä enkeli Gabrielilta."),
+   M("Minä vuonna Muhammad kuoli?","Vuonna 632","Vuonna 570","Vuonna 622","Vuonna 1948","Kun Muhammad kuoli vuonna 632, suurin osa Arabian heimoista oli liittynyt hänen joukkoonsa."),
+   T("Islamilaisessa perinteessä ei hyväksytä ihmisen tai eläinten kuvia uskonnollisessa käytössä.",true,"Oikein. Siksi profeetta Muhammadin kasvot on peitetty maalauksessa, jossa enkeli Gabriel ilmestyy hänelle.")
+  ])
+ ]
+}
+];
+
+/* ---------- Apufunktiot ---------- */
+function el(tag, attrs, html){
+  var e=document.createElement(tag);
+  if(attrs){ Object.keys(attrs).forEach(function(k){ e.setAttribute(k, attrs[k]); }); }
+  if(html!==undefined) e.innerHTML=html;
+  return e;
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+  return arr;
+}
+/* Mosaiikki: siemenellä toistuva satunnaisuus */
+function rng(seed){ var s=seed>>>0; return function(){ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+function mosaic(svg, w, h, seed, palette){
+  var r=rng(seed), cols=Math.round(w/24), rows=Math.round(h/24), cw=w/cols, ch=h/rows;
+  var pts=[], i, j;
+  for(j=0;j<=rows;j++){ pts[j]=[]; for(i=0;i<=cols;i++){ pts[j][i]=[i*cw+(i&&i<cols?(r()-.5)*cw*.7:0), j*ch+(j&&j<rows?(r()-.5)*ch*.7:0)]; } }
+  var out="";
+  for(j=0;j<rows;j++){ for(i=0;i<cols;i++){
+    var d=(i/cols)*0.9-(j/rows)*0.9; // vain oikea yläkulma
+    var edge=(i/cols)+(1-j/rows)-1.0;
+    if(edge+r()*.25<0) continue;
+    var p=[pts[j][i],pts[j][i+1],pts[j+1][i+1],pts[j+1][i]];
+    var c=palette[Math.floor(r()*palette.length)];
+    out+='<polygon points="'+p.map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ")+'" fill="'+c+'" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>';
+  }}
+  svg.innerHTML=out;
+}
+
+/* ---------- Rakenna sivu ---------- */
+var SHOWN=10;
+var tabsEl=document.getElementById("tabs");
+var panelsEl=document.getElementById("panels");
+var state={};   // chapterId -> {checked:bool, score:int, total:int}
+var PALETTE=["#7fd0dc","#3aa9bb","#2d6aa8","#1b4f8a","#5b4fb5","#8a6bd0","#b79ae6","#a7e0e8","#2a8fa6"];
+
+mosaic(document.getElementById("heroMosaic"),600,300,7,PALETTE);
+
+/* Tarkistus: jokaisen kysymyksen rakenne on kunnossa */
+CHAPTERS.forEach(function(ch){
+  var n=0;
+  ch.topics.forEach(function(t){
+    t.qs.forEach(function(q){
+      n++;
+      var okType=(q.t==="mc"&&q.o.length===4)||(q.t==="tf"&&q.o.length===2);
+      var uniq=q.o.filter(function(x,i){return q.o.indexOf(x)===i;}).length===q.o.length;
+      if(!okType||!uniq||!(q.a>=0&&q.a<q.o.length)||!q.q||!q.e){ throw new Error("Virheellinen kysymys: "+q.q); }
+    });
+  });
+  if(n<SHOWN){ throw new Error("Liian vähän kysymyksiä kappaleessa "+ch.title); }
+  ch.bankSize=n; ch.last=[];
+});
+
+/* Arvonta: 10 kysymystä, mahdollisimman monesta eri aiheesta.
+   Edellisellä kerralla näytettyjä kysymyksiä ja aiheita vältetään, kun uusia on tarjolla. */
+function draw(ch){
+  var lastTopics=ch.topics.map(function(t){
+    return t.qs.some(function(q){return ch.last.indexOf(q)>=0;});
+  });
+  var idx=ch.topics.map(function(_,i){return i;});
+  shuffle(idx);
+  idx=idx.filter(function(i){return !lastTopics[i];}).concat(idx.filter(function(i){return lastTopics[i];}));
+  var pools=ch.topics.map(function(t){
+    var fresh=shuffle(t.qs.filter(function(q){return ch.last.indexOf(q)<0;}));
+    var old=shuffle(t.qs.filter(function(q){return ch.last.indexOf(q)>=0;}));
+    return old.concat(fresh); // pop() ottaa ensin uudet
+  });
+  var picked=[]; // {ti, q}
+  var guard=0;
+  while(picked.length<SHOWN && guard++<100){
+    for(var k=0;k<idx.length && picked.length<SHOWN;k++){
+      var ti=idx[k];
+      if(pools[ti].length){ picked.push({ti:ti,q:pools[ti].pop()}); }
+    }
+  }
+  ch.last=picked.map(function(p){return p.q;});
+  // näytetään aiheittain kirjan järjestyksessä
+  var groups={};
+  picked.forEach(function(p){ (groups[p.ti]=groups[p.ti]||[]).push(p.q); });
+  return Object.keys(groups).map(Number).sort(function(a,b){return a-b;}).map(function(ti){
+    return {name:ch.topics[ti].name, qs:groups[ti]};
+  });
+}
+
+function buildQuestions(ch,form){
+  form.innerHTML="";
+  var qn=0;
+  draw(ch).forEach(function(topic){
+    var tw=el("div",{"class":"topic"});
+    tw.appendChild(el("h3",null,esc(topic.name)));
+    topic.qs.forEach(function(q){
+      qn++;
+      var id=ch.id+"-q"+qn;
+      var order=q.o.map(function(_,i){return i;});
+      if(q.t==="mc") shuffle(order);
+      var fs=el("fieldset",{"class":"q "+q.t,id:id});
+      fs.style.border="1.5px solid var(--line)";
+      fs.appendChild(el("legend",null,'<span class="qn">'+qn+'</span>'+esc(q.q)));
+      fs.insertAdjacentHTML("beforeend",'<span class="kind">'+(q.t==="tf"?"Oikein vai väärin":"Monivalinta")+'</span>');
+      var ow=el("div",{"class":"opts"});
+      order.forEach(function(oi){
+        var lab=el("label",{"class":"opt"});
+        var inp=el("input",{type:"radio",name:id,value:String(oi)});
+        lab.appendChild(inp);
+        lab.appendChild(el("span",null,esc(q.o[oi])));
+        inp.addEventListener("change",function(){
+          Array.prototype.forEach.call(ow.children,function(c){c.classList.remove("sel");});
+          lab.classList.add("sel");
+        });
+        ow.appendChild(lab);
+      });
+      fs.appendChild(ow);
+      fs.appendChild(el("div",{"class":"fb"}));
+      fs._q=q;
+      tw.appendChild(fs);
+    });
+    form.appendChild(tw);
+  });
+  state[ch.id]={checked:false,score:0,total:qn};
+}
+
+CHAPTERS.forEach(function(ch, ci){
+  state[ch.id]={checked:false,score:0,total:SHOWN};
+
+  // välilehti
+  var tab=el("button",{"class":"tab",role:"tab",id:"tab-"+ch.id,"aria-controls":"p-"+ch.id,"aria-selected":ci===0?"true":"false",type:"button"});
+  tab.style.setProperty("--c",ch.color);
+  tab.innerHTML=ICONS[ch.icon]+'<span class="n">'+esc(ch.num)+'</span><span class="t">'+esc(ch.short)+'</span><span class="s" id="ts-'+ch.id+'">'+SHOWN+' kysymystä</span>';
+  tab.addEventListener("click",function(){ select(ch.id); });
+  tabsEl.appendChild(tab);
+
+  // paneeli
+  var panel=el("section",{"class":"panel"+(ci===0?" active":""),id:"p-"+ch.id,role:"tabpanel","aria-labelledby":"tab-"+ch.id});
+  panel.style.setProperty("--c",ch.color);
+  var head=el("div",{"class":"chead"});
+  var msvg=el("svg",{"class":"mosaic",viewBox:"0 0 400 140",preserveAspectRatio:"xMaxYMid slice","aria-hidden":"true"});
+  head.appendChild(msvg);
+  head.insertAdjacentHTML("beforeend",'<div class="row"><div class="ico">'+ICONS[ch.icon]+'</div><div><div class="num">'+esc(ch.num)+'</div><h2>'+esc(ch.title)+'</h2></div></div>');
+  panel.appendChild(head);
+  mosaic(msvg,400,140,31+ci*17,["#ffffff","#d6f1f6","#a9d9e6","#ffffff55","#ffffff88","#e9e2ff"]);
+
+  var body=el("div",{"class":"cbody"});
+  body.appendChild(el("div",{"class":"tips"},"<h3>Tärpit</h3><ul>"+ch.tips.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>"));
+  body.appendChild(el("p",{"class":"pinfo"},"Kysymyspankissa on <b>"+ch.bankSize+" kysymystä</b> kappaleen kaikista aiheista. Kerrallaan näytetään "+SHOWN+" satunnaisesti arvottua. Kun painat <b>Aloita alusta</b>, arvotaan uudet kysymykset."));
+  var form=el("form",{novalidate:"novalidate"});
+  form.addEventListener("submit",function(e){e.preventDefault();});
+  body.appendChild(form);
+  buildQuestions(ch,form);
+
+  var actions=el("div",{"class":"actions"});
+  var btnCheck=el("button",{"class":"btn",type:"button"},"Tarkista vastaukset");
+  var btnReset=el("button",{"class":"btn alt",type:"button"},"Aloita alusta (uudet kysymykset)");
+  actions.appendChild(btnCheck); actions.appendChild(btnReset);
+  body.appendChild(actions);
+  var result=el("div",{"class":"result",role:"status","aria-live":"polite"});
+  body.appendChild(result);
+  panel.appendChild(body);
+  panelsEl.appendChild(panel);
+
+  btnCheck.addEventListener("click",function(){ check(ch,panel,result); });
+  btnReset.addEventListener("click",function(){ reset(ch,panel,form,result); });
+});
+
+function select(id){
+  CHAPTERS.forEach(function(ch){
+    var on=ch.id===id;
+    document.getElementById("tab-"+ch.id).setAttribute("aria-selected",on?"true":"false");
+    document.getElementById("p-"+ch.id).classList.toggle("active",on);
+  });
+  window.scrollTo({top:document.getElementById("tabs").offsetTop-10,behavior:"smooth"});
+}
+
+function check(ch,panel,result){
+  var score=0, unanswered=0;
+  var qs=panel.querySelectorAll("fieldset.q");
+  Array.prototype.forEach.call(qs,function(fs){
+    var q=fs._q, correct=q.a;
+    var sel=fs.querySelector("input:checked");
+    var chosen=sel?parseInt(sel.value,10):null;
+    var fb=fs.querySelector(".fb");
+    Array.prototype.forEach.call(fs.querySelectorAll("label.opt"),function(l){
+      var v=parseInt(l.querySelector("input").value,10);
+      l.classList.remove("right","wrong");
+      if(v===correct) l.classList.add("right");
+      else if(v===chosen) l.classList.add("wrong");
+      l.querySelector("input").disabled=true;
+    });
+    fs.classList.add("done");
+    if(chosen===correct){
+      score++; fb.className="fb ok"; fb.innerHTML="<b>Oikein!</b>"+esc(q.e);
+    } else {
+      if(chosen===null){ unanswered++; }
+      fb.className="fb no"; fb.innerHTML="<b>"+(chosen===null?"Ei vastausta.":"Ei aivan.")+"</b>Oikea vastaus: <u>"+esc(q.o[correct])+"</u>. "+esc(q.e);
+    }
+  });
+  var st=state[ch.id]; st.checked=true; st.score=score;
+  var pct=Math.round(score/st.total*100);
+  var msg=pct===100?"Täydet pisteet!":pct>=70?"Hyvin menee. Kertaa vielä väärin menneet.":pct>=40?"Hyvä alku. Lue kappale uudestaan ja kokeile vielä.":"Lue kappale rauhassa uudestaan ja yritä sitten uudelleen.";
+  result.innerHTML='<div class="big">'+score+' / '+st.total+'</div><div>'+msg+(unanswered?" ("+unanswered+" kysymystä jäi vastaamatta.)":"")+'</div><div class="bar"><i></i></div>';
+  result.classList.add("show");
+  setTimeout(function(){ var b=result.querySelector(".bar i"); if(b) b.style.width=pct+"%"; },30);
+  document.getElementById("ts-"+ch.id).textContent="Pisteet "+score+" / "+st.total;
+  updateTotal();
+  result.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function reset(ch,panel,form,result){
+  buildQuestions(ch,form);
+  result.classList.remove("show"); result.innerHTML="";
+  document.getElementById("ts-"+ch.id).textContent=SHOWN+" kysymystä";
+  updateTotal();
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function updateTotal(){
+  var s=0,t=0,any=false;
+  Object.keys(state).forEach(function(k){ if(state[k].checked){ any=true; s+=state[k].score; t+=state[k].total; } });
+  document.getElementById("totalChip").textContent=any?("Pisteet yhteensä: "+s+" / "+t+" (tarkistetut kappaleet)"):"Pisteet yhteensä: –";
+}
+})();
+</script>
+</body>
+</html>
